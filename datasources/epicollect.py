@@ -5,10 +5,21 @@ import pandas as pd
 
 from core.registry import datasource
 from core.datasources import DataSource
-from core.epicollect_tokens import load_token   # <-- USANDO O NOVO TOKEN
+#from core.epicollect_tokens import load_token   # <-- USANDO O NOVO TOKEN
 
 from dotenv import load_dotenv
 load_dotenv()
+
+from api import fetch_data
+
+
+PROJECT_COMERCIO = os.getenv("PROJECT_COMERCIO")
+FORM_COMERCIO_REF = os.getenv("FORM_COMERCIO_REF")
+BASE_URL_COMERCIO = f"https://five.epicollect.net/api/export/entries/{PROJECT_COMERCIO}?form_ref={FORM_COMERCIO_REF}"
+
+PROJECT_RESIDUOS = os.getenv("PROJECT_RESIDUOS")
+FORM_RESIDUOS_REF = os.getenv("FORM_RESIDUOS_REF")
+BASE_URL_RESIDUOS = f"https://five.epicollect.net/api/export/entries/{PROJECT_RESIDUOS}?form_ref={FORM_RESIDUOS_REF}"
 
 
 def extrair_questoes(inputs, lista):
@@ -47,26 +58,7 @@ class EpicollectResiduos(DataSource):
 
 
     def get_entries(self):
-        """Busca entradas da API com tratamento de erros e token persistente."""
-
-        token = load_token(self.FORM_NAME)  # <-- USA O TOKEN AUTOMATICAMENTE
-
-        form_ref = os.getenv("FORM")
-        if not form_ref:
-            raise ValueError("FORM não definido no .env")
-
-        url = (
-            "https://five.epicollect.net/api/export/entries/"
-            f"pesquisaresiduos?sort_order=ASC&per_page=9999&form_ref={form_ref}"
-        )
-
-        headers = {
-            "content-type": "application/json",
-            "Authorization": f"Bearer {token}",
-        }
-
-        r = requests.get(url, headers=headers)
-        data = r.json()
+        data = fetch_data(self.FORM_NAME, BASE_URL_RESIDUOS)
 
         # Tratamento de erros
         if "errors" in data:
@@ -76,7 +68,7 @@ class EpicollectResiduos(DataSource):
                 raise RuntimeError(
                     "🚫 Limite máximo de registros excedido no Epicollect.\n\n"
                     "💡 Soluções:\n"
-                    "• Reduzir o per_page\n"
+                    "• Reduzirrr o per_page\n"
                     "• Paginar\n"
                     "• Aumentar limite no projeto Epicollect"
                 )
@@ -86,6 +78,7 @@ class EpicollectResiduos(DataSource):
         return pd.DataFrame(data["data"]["entries"])
 
 
+
     def load(self):
         """Organiza DataFrame final com colunas coerentes."""
 
@@ -93,6 +86,6 @@ class EpicollectResiduos(DataSource):
         df = self.get_entries()
 
         # Ajustar colunas final
-        df = df[colunas]
+        #df = df[colunas]
 
         return df

@@ -1,56 +1,62 @@
 import streamlit as st
 import pandas as pd
 
-class FilterEngine:
-    def __init__(self, df: pd.DataFrame):
-        self.df = df
-        self.filtered_df = df.copy()
+def render_filters(df, profile):
+    """Cria filtros dinâmicos automaticamente com base no perfil."""
+    
+    st.sidebar.header("Filtros")
 
-    def apply(self):
-        st.markdown("### 🎚️ Filtros Automáticos")
+    filters = {}
 
-        # detecta tipos de dados
-        cat_cols = [c for c in self.df.columns if self.df[c].dtype == "object"]
-        num_cols = [c for c in self.df.columns if pd.api.types.is_numeric_dtype(self.df[c])]
-        date_cols = [c for c in self.df.columns if pd.api.types.is_datetime64_any_dtype(self.df[c])]
+    # Filtros numéricos → slider
+    for col in profile["numeric"]:
+        min_v = float(df[col].min())
+        max_v = float(df[col].max())
+        filters[col] = st.sidebar.slider(col, min_v, max_v, (min_v, max_v))
 
-        with st.expander("Configurar filtros"):
-            # ---------------------------
-            # 1. Filtros para categorias
-            # ---------------------------
-            for col in cat_cols:
-                valores = self.df[col].dropna().unique()
-                selecionados = st.multiselect(f"{col}:", valores, default=valores)
+    # Filtros categóricos → multiselect
+    for col in profile["categorical"]:
+        options = sorted(df[col].dropna().unique())
+        filters[col] = st.sidebar.multiselect(col, options, default=options)
 
-                # aplica filtro
-                self.filtered_df = self.filtered_df[self.filtered_df[col].isin(selecionados)]
+    # Booleanos → select
+    for col in profile["boolean"]:
+        filters[col] = st.sidebar.selectbox(col, ["Todos", True, False])
 
-            # ---------------------------
-            # 2. Filtros para números
-            # ---------------------------
-            for col in num_cols:
-                minimo = float(self.df[col].min())
-                maximo = float(self.df[col].max())
-                vmin, vmax = st.slider(f"{col}:", minimo, maximo, (minimo, maximo))
-                self.filtered_df = self.filtered_df[
-                    (self.filtered_df[col] >= vmin) & (self.filtered_df[col] <= vmax)
-                ]
+    # Datas → intervalo
+    for col in profile["datetime"]:
+        min_d = df[col].min()
+        max_d = df[col].max()
+        filters[col] = st.sidebar.date_input(col, (min_d, max_d))
 
-            # ---------------------------
-            # 3. Filtros para datas
-            # ---------------------------
-            for col in date_cols:
-                min_date = self.df[col].min()
-                max_date = self.df[col].max()
+    return filters
 
-                vmin, vmax = st.date_input(
-                    f"{col}:",
-                    value=[min_date, max_date]
-                )
 
-                self.filtered_df = self.filtered_df[
-                    (self.filtered_df[col] >= pd.to_datetime(vmin)) &
-                    (self.filtered_df[col] <= pd.to_datetime(vmax))
-                ]
+def apply_filters(df, filters):
+    """Aplica os filtros retornando somente os registros válidos."""
 
-        return self.filtered_df
+    for col, val in filters.items():
+
+        # Numéricos
+        if isinstance(val, tuple) and len(val) == 2:
+            df = df[df[col].between(val[0], val[1])]
+            continue
+
+        # Categóricos
+        if isinstance(val, list):
+            if val:
+                df = df[df[col].isin(val)]
+            continue
+
+        # Booleanos
+        if val in (True, False):
+            df = df[df[col] == val]
+            continue
+
+        # Datas
+        if isinstance(val, tuple) and hasattr(val[0], "year"):
+            start, end = val
+            df = df[(df[col] >= pd.to_datetime(start)) & (df[col] <= pd.to_datetime(end))]
+            continue
+
+    return df

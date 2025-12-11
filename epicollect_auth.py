@@ -20,22 +20,9 @@ def get_token(form_name):
     }
 
     response = requests.post(url, data=data)
-    token_data = response.json()
 
-    if "errors" in token_data:
-            erro = token_data["errors"][0]
-            print ("erro")
-            if erro.get("code") == "ec5_255":
-                raise RuntimeError(
-                    "🚫 Limite máximo de registros excedido no Epicollect.\n\n"
-                )
-
-            raise RuntimeError(f"Erro da API Epicollect: {erro.get('title')}")
-
-    
-    
     if response.status_code == 200:
-        
+        token_data = response.json()
         access_token = token_data.get("access_token")
         expires_in = token_data.get("expires_in", 7200)
         expiration_time = time.time() + expires_in
@@ -55,10 +42,8 @@ def get_token(form_name):
             json.dump(all_tokens, f)
 
         return access_token
-
     else:
         raise Exception(f"Erro ao obter token para '{form_name}': {response.json()}")
-
 
 def load_token(form_name):
     try:
@@ -70,16 +55,11 @@ def load_token(form_name):
                     return token_data["access_token"]
     except:
         pass
-
-    # Token expirado ou ausente → recarrega
     return get_token(form_name)
 
-
 def initialize_tokens():
-    """Pré-carrega tokens dos formulários."""
-    for form_name in [ "residuos"]:
+    for form_name in ["residuoscomercio", "residuos"]:
         print (form_name)
-        print (load_token(form_name))
+        load_token(form_name)
 
-#initialize_tokens()
-print ("ola")
+
