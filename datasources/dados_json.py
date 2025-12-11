@@ -51,7 +51,7 @@ class EpicollectResiduos(DataSource):
         
         df = pd.DataFrame(dados["data"])
         # Ajustar colunas final
-        #df.columns = colunas
+        df.columns = colunas
         print (df.head)
         print (df.columns)
         print("---------")
