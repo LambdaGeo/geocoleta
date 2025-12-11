@@ -3,6 +3,8 @@ import plotly.express as px
 import pandas as pd
 from core.registry import page
 
+from core.filters import FilterEngine
+
 @page("Gráficos da Pesquisa")
 def render_graficos(df: pd.DataFrame):
 
@@ -11,6 +13,9 @@ def render_graficos(df: pd.DataFrame):
     if df is None or df.empty:
         st.warning("Nenhum dado carregado.")
         return
+    
+    filtros = FilterEngine(df)
+    df = filtros.apply()
 
     # Identifica colunas
     cols_numericas = df.select_dtypes(include="number").columns.tolist()
