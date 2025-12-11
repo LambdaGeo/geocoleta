@@ -13,9 +13,11 @@ def render_map(df, profile):
     if coords.empty:
         return
 
+    print (coords)
+
     points = [
         (float(p["latitude"]), float(p["longitude"]))
-        for p in coords
+        for p in coords if p["latitude"] != ''
     ]
 
     center = points[0]

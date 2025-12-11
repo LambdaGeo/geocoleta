@@ -34,7 +34,8 @@ def profile_df(df: pd.DataFrame):
                 profile["geo"].append(col)
                 continue
 
-        if series.dtype == object:
+        #if series.dtype == object:
+        if False:
 
             # categóricas com cardinalidade baixa
             if series.nunique() <= 50:

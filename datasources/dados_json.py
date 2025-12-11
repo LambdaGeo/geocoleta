@@ -24,7 +24,7 @@ def extrair_questoes(inputs, lista):
 
     return lista
 
-#@datasource("Epicollect (Pesquisa Resíduos)")
+@datasource("Epicollect (Pesquisa Resíduos)")
 class EpicollectResiduos(DataSource):
 
     def get_form_schema(self):
