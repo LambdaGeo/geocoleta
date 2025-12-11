@@ -14,8 +14,8 @@ def render_graficos(df: pd.DataFrame):
         st.warning("Nenhum dado carregado.")
         return
     
-    filtros = FilterEngine(df)
-    df = filtros.apply()
+    #filtros = FilterEngine(df)
+    #df = filtros.apply()
 
     # Identifica colunas
     cols_numericas = df.select_dtypes(include="number").columns.tolist()
