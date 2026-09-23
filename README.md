@@ -114,3 +114,7 @@ docs/PLANO.md       plano de desenvolvimento (histórico)
 ```bash
 python -m pytest -q
 ```
+
+## Licença
+
+MIT — veja [LICENSE](LICENSE).
