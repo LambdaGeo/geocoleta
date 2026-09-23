@@ -1,11 +1,14 @@
+from pathlib import Path
+
 import pytest
 import streamlit
 from streamlit.testing.v1 import AppTest
 
-from conftest import ROOT
+import geocoleta
+from conftest import EXAMPLE
 
-APP = str(ROOT / "app.py")
-OFFLINE = str(ROOT / "projetos" / "residuos_offline.yaml")
+APP = str(Path(geocoleta.__file__).resolve().parent / "app.py")
+CONFIG = str(EXAMPLE / "projeto.yaml")
 
 
 def _plotly_stub(fig, *args, **kwargs):
@@ -15,7 +18,7 @@ def _plotly_stub(fig, *args, **kwargs):
 
 
 def run(monkeypatch, page=None):
-    monkeypatch.setenv("DASH_CONFIG", OFFLINE)
+    monkeypatch.setenv("GEOCOLETA_CONFIG", CONFIG)
     monkeypatch.setattr(streamlit, "plotly_chart", _plotly_stub)
     at = AppTest.from_file(APP, default_timeout=60)
     at.run()
@@ -25,7 +28,7 @@ def run(monkeypatch, page=None):
     return at
 
 
-@pytest.mark.parametrize("page", ["Visão geral", "Destaques", "Perguntas", "Dados"])
+@pytest.mark.parametrize("page", ["Visão geral", "Destaques", "Perguntas", "Reciclagem", "Dados"])
 def test_pages_render(monkeypatch, page):
     run(monkeypatch, page)
 

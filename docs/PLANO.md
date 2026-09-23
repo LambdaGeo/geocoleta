@@ -1,5 +1,8 @@
 # Plano de execução — myframework
 
+> Documento histórico: plano escrito quando o framework ainda era a pasta `myframework/`
+> do repositório `datmoze`. Hoje o código está em `geocoleta/` (pacote) e o uso está no README.
+
 Objetivo: dashboard genérico para formulários Epicollect5 que **não quebra quando as perguntas mudam** e pode ser reaproveitado em outros trabalhos de campo trocando só um arquivo de configuração.
 
 Princípio: o dashboard é guiado pelo **schema do formulário** (tipo da pergunta, opções, grupo), não por adivinhação de dtype do pandas. Perguntas são identificadas pelo `ref` (estável), nunca pela posição.

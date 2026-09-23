@@ -5,7 +5,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from core.model import Dataset, Field
+from geocoleta.ui.compat import FULL_WIDTH
+from geocoleta.core.model import Dataset, Field
 
 # Paleta categórica validada (ordem fixa, nunca reciclada); além de 8 grupos, o resto vira "Outros"
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]
@@ -35,7 +36,7 @@ def _layout(fig, height=None):
 def _show(fig, key):
     # `meta` torna cada figura única sem usar key= (que transforma o gráfico em widget)
     fig.update_layout(meta=key)
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, **FULL_WIDTH, config={"displayModeBar": False})
 
 
 def counts(df: pd.DataFrame, f: Field) -> pd.DataFrame:
@@ -180,7 +181,7 @@ def _text(df, f, key):
         st.caption("Sem respostas no filtro atual.")
         return
     st.caption(f"{len(answers)} respostas abertas")
-    st.dataframe(answers.rename("resposta").reset_index(drop=True), use_container_width=True,
+    st.dataframe(answers.rename("resposta").reset_index(drop=True), **FULL_WIDTH,
                  height=min(38 + 35 * len(answers), 300), key=key)
 
 

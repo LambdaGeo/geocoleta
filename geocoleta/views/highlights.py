@@ -1,8 +1,8 @@
 import streamlit as st
 
-from core.context import PageContext
-from core.registry import page
-from ui.charts import render_field
+from geocoleta.core.context import PageContext
+from geocoleta.core.registry import page
+from geocoleta.ui.charts import render_field
 
 
 @page("Destaques", order=20, available=lambda ctx: bool(ctx.config.destaques))

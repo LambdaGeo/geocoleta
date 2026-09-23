@@ -1,9 +1,9 @@
 import streamlit as st
 
-from core.context import PageContext
-from core.registry import page
-from ui.charts import render_field, timeline
-from ui.maps import location_field, render_map
+from geocoleta.core.context import PageContext
+from geocoleta.core.registry import page
+from geocoleta.ui.charts import render_field, timeline
+from geocoleta.ui.maps import location_field, render_map
 
 
 @page("Visão geral", order=10)

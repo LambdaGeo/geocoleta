@@ -2,15 +2,14 @@ import json
 
 import pytest
 
-from core.config import load_config
-from core.loader import bootstrap, load_dataset
-from core.schema import export_column, parse_form, reconcile
+from geocoleta.core.config import load_config
+from geocoleta.core.loader import bootstrap, load_dataset
+from geocoleta.core.schema import export_column, parse_form, reconcile
 
-from conftest import ROOT
+from conftest import EXAMPLE
 
-REPO = ROOT.parent
-FORM = REPO / "pesquisaresiduos__diagnostico__form.json"
-DATA = REPO / "dados.json"
+FORM = EXAMPLE / "formulario.json"
+DATA = EXAMPLE / "dados.json"
 
 
 @pytest.fixture(scope="module")
@@ -50,8 +49,9 @@ def test_renumbered_form_still_matches(schema, entries):
 
 
 def test_offline_dataset_types():
-    bootstrap()
-    ds = load_dataset(load_config(ROOT / "projetos" / "residuos_offline.yaml"))
+    config = load_config(EXAMPLE / "projeto.yaml")
+    bootstrap(config)
+    ds = load_dataset(config)
     assert len(ds.df) == 18
     assert str(ds.df[ds.field("idade").column].dtype) == "category"
     assert list(ds.df[ds.field("idade").column].cat.categories[:1]) == [ds.field("idade").options[0]]

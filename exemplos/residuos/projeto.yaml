@@ -1,16 +1,21 @@
-# Pesquisa de resíduos sólidos – Itaqui-Bacanga (dados ao vivo do Epicollect5)
+# Exemplo: pesquisa domiciliar de resíduos sólidos (Itaqui-Bacanga, São Luís – MA).
+# Dados anonimizados salvos em disco; para ler direto do Epicollect5, troque `fonte` por:
+#
+#   fonte:
+#     tipo: epicollect
+#     projeto: ${PROJECT_RESIDUOS}     # slug do projeto
+#     form_ref: ${FORM_RESIDUOS_REF}   # opcional
+#     credenciais: RESIDUOS            # RESIDUOS_CLIENT_ID / RESIDUOS_CLIENT_SECRET no .env
+
 titulo: "Diagnóstico de Resíduos – Itaqui-Bacanga"
-subtitulo: "Pesquisa domiciliar sobre resíduos sólidos negligenciados · UFMA"
+subtitulo: "Exemplo com dados anonimizados"
 
 fonte:
-  tipo: epicollect
-  projeto: ${PROJECT_RESIDUOS}
-  form_ref: ${FORM_RESIDUOS_REF}
-  credenciais: RESIDUOS
-  schema: ../../pesquisaresiduos__diagnostico__form.json   # usado se a API do projeto falhar
+  tipo: json
+  dados: dados.json
+  schema: formulario.json
 
-# Apelidos: nome curto -> ref (basta o final), coluna ou texto da pergunta.
-# Use `python tools/listar_campos.py projetos/residuos.yaml` para ver os campos.
+# Apelidos: nome curto -> final do ref, coluna ou texto da pergunta (veja `geocoleta campos`)
 campos:
   localizacao: "f27864"
   idade: "83aec3"
@@ -25,11 +30,10 @@ campos:
   separa_reciclagem: "527827"
   avaliacao_coleta: "d27837"
 
-# Bairro é texto livre no formulário; tratar como categoria permite filtrar e cruzar
+# Bairro é texto livre no formulário; como categoria dá para filtrar e cruzar
 tipos:
   bairro: category
 
-# Campos que não aparecem no dashboard
 ignorar: ["2da40f", "3401cb", "f401ca"]   # consentimento, CEP, logradouro
 
 filtros: [created_at, bairro, idade, genero, renda]
@@ -44,5 +48,7 @@ mapa:
   campo: localizacao
   popup: [bairro, idade]
 
+# Páginas próprias deste projeto
+extensoes: [paginas]
+
 fuso: America/Fortaleza
-cache_minutos: 5

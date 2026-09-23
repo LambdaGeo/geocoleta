@@ -36,6 +36,7 @@ class Config:
     destaques: list = field(default_factory=list)
     secoes: list = field(default_factory=list)
     mapa: dict = field(default_factory=dict)
+    extensoes: list = field(default_factory=list)   # .py ou pastas com páginas/fontes do projeto
     fuso: str = "America/Fortaleza"
     cache_minutos: int = 5
 

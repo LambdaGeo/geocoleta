@@ -4,8 +4,8 @@ import time
 
 import requests
 
-from core.registry import source
-from sources.base import DataSource
+from geocoleta.core.registry import source
+from geocoleta.sources.base import DataSource
 
 API = "https://five.epicollect.net/api"
 PER_PAGE = 1000

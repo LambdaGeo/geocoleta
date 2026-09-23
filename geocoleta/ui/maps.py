@@ -5,7 +5,7 @@ import streamlit as st
 from folium.plugins import HeatMap
 import streamlit.components.v1 as components
 
-from core.model import Dataset
+from geocoleta.core.model import Dataset
 
 POINT_COLOR = "#2a78d6"
 

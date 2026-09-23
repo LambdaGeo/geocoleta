@@ -1,7 +1,7 @@
 import json
 
-from core.registry import source
-from sources.base import DataSource
+from geocoleta.core.registry import source
+from geocoleta.sources.base import DataSource
 
 
 def _read(path):

@@ -1,0 +1,1569 @@
+{
+ "data": {
+  "id": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea",
+  "type": "form",
+  "form": {
+   "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea",
+   "name": "diagnostico",
+   "slug": "diagnostico",
+   "type": "hierarchy",
+   "inputs": [
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_676062fada409",
+     "type": "group",
+     "question": "TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO ",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": [
+      {
+       "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_676062fada409_6760633eda40b",
+       "type": "readme",
+       "question": "&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.2;text-align: justify;margin-top:0pt;margin-bottom:8pt;&quot;&gt;Você está sendo convidado(a) a participar, como voluntário(a), da pesquisa denominada: \"Aspectos socioambientais do descarte irregular de resíduos sólidos na Região Itaqui-Bacanga\".&lt;br&gt;&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.2;text-align: justify;margin-top:0pt;margin-bottom:8pt;&quot;&gt;A proposta do presente estudo de pesquisa tem como objetivo de avaliar os processos de participação das diferentes esferas sociais a respeito do descarte irregular de resíduos sólidos na Região Itaqui-Bacanga.&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.2;text-align: justify;margin-top:0pt;margin-bottom:8pt;&quot;&gt;Durante o desenvolvimento da pesquisa será aplicado um questionário semiestruturado sobre a temática contendo questões referente ao perfil socioeconômico, coleta e destinação de resíduos sólidos, impactos gerados pelos resíduos e a participação popular para solucionar o problema.&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;line-height:1.2;text-align: justify;margin-top:0pt;margin-bottom:8pt;&quot;&gt;Os riscos relacionados com sua participação são mínimos de cansaço e/ou fadiga no preenchimento do questionário. A fim de diminuir esses riscos, as questões do questionário serão mais objetivas possíveis, evitando perguntas com dupla interpretação e vocabulário acessível.&lt;/p&gt;",
+       "is_title": false,
+       "is_required": false,
+       "uniqueness": "none",
+       "regex": null,
+       "default": null,
+       "verify": false,
+       "max": null,
+       "min": null,
+       "datetime_format": null,
+       "set_to_current_datetime": false,
+       "possible_answers": [],
+       "jumps": [],
+       "branch": [],
+       "group": []
+      },
+      {
+       "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_676062fada409_67606362da40c",
+       "type": "readme",
+       "question": "&lt;p dir=&quot;ltr&quot; style=&quot;margin-top: 0pt; margin-bottom: 8pt; letter-spacing: 0.1px; line-height: 1.2; text-align: justify;&quot;&gt;Os benefícios relacionados com a sua participação contribuirão para o desenvolvimento das atividades propostos, e permitirá a execução adequada do projeto. Desta forma, os resultados obtidos serão utilizados para propor discussões e soluções educacionais sobre o descarte irregular de Resíduos Sólidos ao entorno da avenida dos Portugueses (eixo Itaqui-Bacanga).&lt;/p&gt;&lt;p style=&quot;letter-spacing: 0.1px;&quot;&gt;&lt;/p&gt;&lt;p dir=&quot;ltr&quot; style=&quot;margin-top: 0pt; margin-bottom: 8pt; letter-spacing: 0.1px; line-height: 1.2; text-align: justify;&quot;&gt;Gostaria de esclarecer que as informações serão utilizadas exclusivamente para fins de investigação científica. Será garantido total anonimato e nomes fictícios serão utilizados na divulgação dos resultados da pesquisa. Em qualquer momento você pode retirar o consentimento da participação da pesquisa, sem qualquer prejuízo pessoal ou institucional, sem lhe acarretar quaisquer custos ou danos. Sua recusa em participar da pesquisa não trará nenhum prejuízo em sua relação com o pesquisador ou com a instituição de ensino. Não haverá compensação alguma, seja ela financeira ou não, pela sua participação.&lt;/p&gt;",
+       "is_title": false,
+       "is_required": false,
+       "uniqueness": "none",
+       "regex": null,
+       "default": null,
+       "verify": false,
+       "max": null,
+       "min": null,
+       "datetime_format": null,
+       "set_to_current_datetime": false,
+       "possible_answers": [],
+       "jumps": [],
+       "branch": [],
+       "group": []
+      }
+     ]
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_676063d2da40f",
+     "type": "checkbox",
+     "question": "Declaro que entendi os objetivos, riscos e benefícios da minha participação na pesquisa e concordo em participar. ",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim, quero participar.",
+       "answer_ref": "676063d2da410"
+      },
+      {
+       "answer": "Não, não quero participar.",
+       "answer_ref": "676063e0da411"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "END",
+       "when": "IS",
+       "answer_ref": "676063e0da411"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745be0f27864",
+     "type": "location",
+     "question": "Localização do ponto da entrevista",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_675994083aec3",
+     "type": "radio",
+     "question": "Idade",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "De 18 a 29 anos de idade",
+       "answer_ref": "6759948c3aec6"
+      },
+      {
+       "answer": "De 30 a 45 anos de idade",
+       "answer_ref": "6759948c3aec7"
+      },
+      {
+       "answer": "De 46 a 59 anos de idade",
+       "answer_ref": "6759948c3aec8"
+      },
+      {
+       "answer": "Mais de 60 anos de idade",
+       "answer_ref": "6759948c3aec9"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674507688c343",
+     "type": "radio",
+     "question": "Gênero",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Masculino",
+       "answer_ref": "674507688c344"
+      },
+      {
+       "answer": "Feminino",
+       "answer_ref": "674507828c345"
+      },
+      {
+       "answer": "Prefiro não informar",
+       "answer_ref": "674507d28c346"
+      },
+      {
+       "answer": "Outro (especifique)",
+       "answer_ref": "6759945c3aec5"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674503e98c336",
+       "when": "IS_NOT",
+       "answer_ref": "6759945c3aec5"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_675995153aeca",
+     "type": "text",
+     "question": "Gênero - Especifique:",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674503e98c336",
+     "type": "radio",
+     "question": "Etnia",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Negro",
+       "answer_ref": "674504018c338"
+      },
+      {
+       "answer": "Branco",
+       "answer_ref": "674504018c339"
+      },
+      {
+       "answer": "Pardo",
+       "answer_ref": "674504018c33a"
+      },
+      {
+       "answer": "Amarelo",
+       "answer_ref": "674504018c33b"
+      },
+      {
+       "answer": "Indígena",
+       "answer_ref": "674504018c33c"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674f6225401c9",
+     "type": "group",
+     "question": "Endereço",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": [
+      {
+       "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674f6225401c9_674f62a3401cb",
+       "type": "text",
+       "question": "CEP (opcional)",
+       "is_title": false,
+       "is_required": false,
+       "uniqueness": "none",
+       "regex": null,
+       "default": null,
+       "verify": false,
+       "max": null,
+       "min": null,
+       "datetime_format": null,
+       "set_to_current_datetime": false,
+       "possible_answers": [],
+       "jumps": [],
+       "branch": [],
+       "group": []
+      },
+      {
+       "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674f6225401c9_674f623f401ca",
+       "type": "text",
+       "question": "Logradouro (rua, avenida, travessa ...)",
+       "is_title": false,
+       "is_required": true,
+       "uniqueness": "none",
+       "regex": null,
+       "default": null,
+       "verify": false,
+       "max": null,
+       "min": null,
+       "datetime_format": null,
+       "set_to_current_datetime": false,
+       "possible_answers": [],
+       "jumps": [],
+       "branch": [],
+       "group": []
+      },
+      {
+       "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674f6225401c9_674f6415401ce",
+       "type": "text",
+       "question": "Bairro: ",
+       "is_title": false,
+       "is_required": true,
+       "uniqueness": "none",
+       "regex": null,
+       "default": null,
+       "verify": false,
+       "max": null,
+       "min": null,
+       "datetime_format": null,
+       "set_to_current_datetime": false,
+       "possible_answers": [],
+       "jumps": [],
+       "branch": [],
+       "group": []
+      }
+     ]
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759958d3aecb",
+     "type": "radio",
+     "question": "Ocupação principal",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Funcionário público ou privado",
+       "answer_ref": "675995c23aecd"
+      },
+      {
+       "answer": "Estudante",
+       "answer_ref": "675995c23aece"
+      },
+      {
+       "answer": "Empreendedor",
+       "answer_ref": "675995c23aed0"
+      },
+      {
+       "answer": "Comerciário",
+       "answer_ref": "675995c23aed1"
+      },
+      {
+       "answer": "Comerciante",
+       "answer_ref": "675995c23aed2"
+      },
+      {
+       "answer": "Aposentado",
+       "answer_ref": "675995c23aed3"
+      },
+      {
+       "answer": "Desempregado",
+       "answer_ref": "675995c23aed4"
+      },
+      {
+       "answer": "Incapaz de trabalhar",
+       "answer_ref": "675995c23aed5"
+      },
+      {
+       "answer": "Autônomo ou Outro (especifique a seguir)",
+       "answer_ref": "675995c23aed6"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67599b943aed7",
+       "when": "IS_NOT",
+       "answer_ref": "675995c23aed6"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674507f18c348",
+     "type": "text",
+     "question": "Ocupação principal - Especifique:",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67599b943aed7",
+     "type": "radio",
+     "question": "Renda familiar mensal (todos os integrantes da casa)",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Até R$ 2.824,00",
+       "answer_ref": "67599ba43aedf"
+      },
+      {
+       "answer": "R$ 2.824,01 a R$ 4.236,00",
+       "answer_ref": "67599ba43aede"
+      },
+      {
+       "answer": "R$ 4.236,01 a R$ 8.472,00",
+       "answer_ref": "67599ba43aedd"
+      },
+      {
+       "answer": "R$ 8.472,01 a R$ 14.120,00",
+       "answer_ref": "67599ba43aedc"
+      },
+      {
+       "answer": "R$ 14.120,01 a R$ 21.180,00",
+       "answer_ref": "67599ba43aedb"
+      },
+      {
+       "answer": "R$ 21.180,01 a R$ 35.300,00",
+       "answer_ref": "67599ba43aeda"
+      },
+      {
+       "answer": "R$ 35.300,01 ou mais",
+       "answer_ref": "67599ba43aed9"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745f029ad4a6",
+     "type": "radio",
+     "question": "Você ou algum membro de sua família são beneficiários de Programas Sociais?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6745f029ad4a7"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6745f036ad4a8"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745ba6127852",
+       "when": "IS",
+       "answer_ref": "6745f036ad4a8"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745f24dad4c0",
+     "type": "checkbox",
+     "question": "Beneficiário de qual ou quais programas ?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Bolsa Família",
+       "answer_ref": "6745f24dad4c1"
+      },
+      {
+       "answer": " Auxílio Pesca",
+       "answer_ref": "6745f263ad4c2"
+      },
+      {
+       "answer": "Benefício de Prestação Continuada (BPC)",
+       "answer_ref": "6745f27aad4c3"
+      },
+      {
+       "answer": "Outros (especifique)",
+       "answer_ref": "6745f27fad4c4"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745ba6127852",
+       "when": "IS_NOT",
+       "answer_ref": "6745f27fad4c4"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745090e8c34f",
+     "type": "text",
+     "question": "Programa Social - Especifique",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745ba6127852",
+     "type": "radio",
+     "question": "Nível de escolaridade",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Analfabeto",
+       "answer_ref": "6745baca27854"
+      },
+      {
+       "answer": "Até 5º Ano Incompleto",
+       "answer_ref": "6745baca27855"
+      },
+      {
+       "answer": "5º Ano Completo",
+       "answer_ref": "6745baca27856"
+      },
+      {
+       "answer": "6º ao 9º Ano do Fundamental",
+       "answer_ref": "6745baca27857"
+      },
+      {
+       "answer": "Fundamental Completo",
+       "answer_ref": "6745baca27858"
+      },
+      {
+       "answer": "Médio Incompleto",
+       "answer_ref": "6745baca27859"
+      },
+      {
+       "answer": "Médio Completo",
+       "answer_ref": "6745baca2785a"
+      },
+      {
+       "answer": "Superior Incompleto",
+       "answer_ref": "6745baca2785b"
+      },
+      {
+       "answer": "Superior Completo",
+       "answer_ref": "6745baca2785c"
+      },
+      {
+       "answer": "Mestrado",
+       "answer_ref": "6745baca2785d"
+      },
+      {
+       "answer": "Doutorado",
+       "answer_ref": "6745baca2785e"
+      },
+      {
+       "answer": "Ignorado",
+       "answer_ref": "6745baca2785f"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674509588c351",
+     "type": "integer",
+     "question": "Quantas pessoas moram na mesma casa com você?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "",
+     "min": "",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67599ce23aee0",
+     "type": "radio",
+     "question": "Qual a frequência de coleta de lixo na sua rua durante a semana",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Uma vez na semana",
+       "answer_ref": "67599d043aee2"
+      },
+      {
+       "answer": "Duas vezes na semana",
+       "answer_ref": "67599d043aee3"
+      },
+      {
+       "answer": "Três vezes na semana",
+       "answer_ref": "67599d043aee4"
+      },
+      {
+       "answer": "Todo dia",
+       "answer_ref": "67599d043aee5"
+      },
+      {
+       "answer": "Nunca",
+       "answer_ref": "67599d043aee6"
+      },
+      {
+       "answer": "Não sabe",
+       "answer_ref": "67599d043aee7"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450b158c354",
+     "type": "radio",
+     "question": "De que forma é realizada a coleta pela prefeitura?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Na porta das casas",
+       "answer_ref": "67450b238c356"
+      },
+      {
+       "answer": "Em um local definido pelo agente de limpeza",
+       "answer_ref": "67450b238c357"
+      },
+      {
+       "answer": "Em um ponto comum dos moradores que já é habitual",
+       "answer_ref": "67450b238c358"
+      },
+      {
+       "answer": "Não sei informar",
+       "answer_ref": "67460c0bad4c5"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450b8d8c359",
+     "type": "radio",
+     "question": "Você sabe o horário da coleta na sua rua?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "67450ba28c35c"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "67450ba28c35d"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450c848c35e",
+     "type": "radio",
+     "question": "Como é destinado o lixo da sua residência?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Não é separado, o colocamos à disposição do caminhão de limpeza urbana da prefeitura",
+       "answer_ref": "67450c998c360"
+      },
+      {
+       "answer": "Coletado por outros catadores de lixo (carroceiros)",
+       "answer_ref": "67450c998c361"
+      },
+      {
+       "answer": "Enterrado",
+       "answer_ref": "67450c998c362"
+      },
+      {
+       "answer": "Colocado na rua",
+       "answer_ref": "67450c998c363"
+      },
+      {
+       "answer": "Colocado em terreno baldio",
+       "answer_ref": "67450c998c364"
+      },
+      {
+       "answer": "Queimado",
+       "answer_ref": "67450c998c365"
+      },
+      {
+       "answer": "Colocado no mangue/praia/mar",
+       "answer_ref": "67450c998c366"
+      },
+      {
+       "answer": "Separado e destinado para reciclagem e caminhão de limpeza urbana da prefeitura",
+       "answer_ref": "67450c998c367"
+      },
+      {
+       "answer": "Outros destinos (especifique)",
+       "answer_ref": "67450c998c368"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450ccd8c369",
+       "when": "IS_NOT",
+       "answer_ref": "67450c998c368"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745bb7a27861",
+     "type": "text",
+     "question": "Outro destino do lixo residencial",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450ccd8c369",
+     "type": "radio",
+     "question": "Quando você descarta o lixo ?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "No dia em que é gerado",
+       "answer_ref": "67450ce38c36b"
+      },
+      {
+       "answer": "Qualquer dia, se tiver lixo em casa",
+       "answer_ref": "67450ce38c36c"
+      },
+      {
+       "answer": "Apenas no dia da coleta, a qualquer hora",
+       "answer_ref": "67450ce38c36d"
+      },
+      {
+       "answer": "Apenas no dia da coleta, próximo ao horário da coleta",
+       "answer_ref": "67450ce38c36e"
+      },
+      {
+       "answer": "Outro (especifique)",
+       "answer_ref": "67450ce38c36f"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b4023aee8",
+       "when": "IS_NOT",
+       "answer_ref": "67450ce38c36f"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745bbdc27862",
+     "type": "text",
+     "question": "Outro momento de descarte",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b4023aee8",
+     "type": "radio",
+     "question": "Onde você armazena o seu lixo antes de ser descartado a um destino final?",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sacolas plásticas",
+       "answer_ref": "6759b41d3aeea"
+      },
+      {
+       "answer": "Em uma lixeira com tampa",
+       "answer_ref": "6759b41d3aeeb"
+      },
+      {
+       "answer": "Em uma lixeira sem tampa",
+       "answer_ref": "6759b41d3aeec"
+      },
+      {
+       "answer": "Sacos de lixo",
+       "answer_ref": "6759b41d3aeed"
+      },
+      {
+       "answer": "Caixas de papelão",
+       "answer_ref": "6759b41d3aeee"
+      },
+      {
+       "answer": "Outros (especifique)",
+       "answer_ref": "6759b41d3aeef"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450ddb8c371",
+       "when": "IS_NOT",
+       "answer_ref": "6759b41d3aeef"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450d098c370",
+     "type": "text",
+     "question": "Armazenamento do Lixo - Especifique",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450ddb8c371",
+     "type": "radio",
+     "question": "Em algumas vezes você já destinou lixo em pontos irregulares?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "67450df68c373"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "67450df68c374"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674515d08c381",
+       "when": "IS",
+       "answer_ref": "67450df68c374"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67450e1d8c375",
+     "type": "radio",
+     "question": "Se a resposta da pergunta anterior for SIM, o que te leva a destinar o lixo em pontos irregulares?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Falta de caçamba",
+       "answer_ref": "67450e478c37e"
+      },
+      {
+       "answer": "Falta de coleta nos dias programados",
+       "answer_ref": "67450e478c37f"
+      },
+      {
+       "answer": "Outro (especifique)",
+       "answer_ref": "67450e478c380"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674515d08c381",
+       "when": "IS_NOT",
+       "answer_ref": "67450e478c380"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759bcdc24245",
+     "type": "text",
+     "question": "Especifique o que te leva a destinar o lixo em pontos irregulares",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_674515d08c381",
+     "type": "radio",
+     "question": "Você já testemunhou o descarte irregular de lixo na Região Itaqui-Bacanga?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "674516688c383"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "674516688c384"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b35f27825",
+     "type": "radio",
+     "question": "Você já ouviu falar em reciclagem? ",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6745b67b2783c"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6745b67b2783d"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b37527827",
+     "type": "radio",
+     "question": "Você separa o lixo para reciclagem?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6745b37527828"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6745b6922783f"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b645c2aa5",
+       "when": "IS",
+       "answer_ref": "6745b6922783f"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_67475f4cfc23b",
+     "type": "text",
+     "question": "Onde vc entrega o lixo que você separa o lixo para reciclagem?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "Ecopontos",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b645c2aa5",
+     "type": "radio",
+     "question": "Você reutiliza o seu lixo para outros fins?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6759b645c2aa7"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6759b645c2aa8"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b3db2782d",
+       "when": "IS",
+       "answer_ref": "6759b645c2aa8"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b5383af09",
+     "type": "text",
+     "question": "Para qual fim você reutiliza o lixo ?",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b3db2782d",
+     "type": "radio",
+     "question": "Você já ouviu falar em coleta seletiva?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6745b3db2782e"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6745b6ec27842"
+      }
+     ],
+     "jumps": [
+      {
+       "to": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b40727831",
+       "when": "IS",
+       "answer_ref": "6745b6ec27842"
+      }
+     ],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b3ef2782f",
+     "type": "radio",
+     "question": "Se já ouviu falar, o que você entende como coleta seletiva?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Coleta de todo o lixo produzido",
+       "answer_ref": "6745b70027843"
+      },
+      {
+       "answer": "Coleta de todo lixo que pode ser reciclado",
+       "answer_ref": "6745b70027844"
+      },
+      {
+       "answer": "Coleta de lixos separados de acordo com a destinação",
+       "answer_ref": "6745b70027845"
+      },
+      {
+       "answer": "Coleta de lixos separados de acordo com a sua constituição ou composição",
+       "answer_ref": "6745b70027846"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b40727831",
+     "type": "radio",
+     "question": "Você participaria de um programa de coleta seletiva para separar o lixo doméstico produzido na sua casa?",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Sim",
+       "answer_ref": "6745b40727832"
+      },
+      {
+       "answer": "Não",
+       "answer_ref": "6745bd6027863"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b73b27847",
+     "type": "textarea",
+     "question": "Na sua opinião, qual é causa da existência desses lixos em locais públicos? ",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b43827835",
+     "type": "textarea",
+     "question": "Você tem alguma sugestão específica para reduzir o descarte irregular do lixo na Região Itaqui Bacanga?",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b4ce27836",
+     "type": "textarea",
+     "question": "Como você acha que o descarte inadequado do lixo afeta a vida dos moradores da região? ",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b4dd27837",
+     "type": "radio",
+     "question": "Como você avalia o serviço de coleta pública no teu bairro? ",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": null,
+     "default": "",
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [
+      {
+       "answer": "Ruim",
+       "answer_ref": "6745b4dd27838"
+      },
+      {
+       "answer": "Regular",
+       "answer_ref": "6745b75227848"
+      },
+      {
+       "answer": "Bom",
+       "answer_ref": "6745b75227849"
+      },
+      {
+       "answer": "Ótimo",
+       "answer_ref": "6745b7532784a"
+      }
+     ],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745b4ea27839",
+     "type": "textarea",
+     "question": "Como você acha que as autoridades locais podem melhorar a gestão de resíduos na área?",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745bf5227865",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade das  EMPRESAS DA ÁREA pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745c14027866",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade da PREFEITURA pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745c14527867",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade dos MORADORES pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745c14927868",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade dos  COMERCIANTES/FEIRANTES pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6759b6e6c2aa9",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade dos CARROCEIROS pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745c18827869",
+     "type": "integer",
+     "question": "Na sua opinião, qual é o grau de responsabilidade dos CATADORES pela presença de pontos de descarte irregular de lixo na região Itaqui-Bacanga? Avalie de 1 (nada responsável) a 5 (muito responsável).",
+     "is_title": false,
+     "is_required": true,
+     "uniqueness": "none",
+     "regex": "",
+     "default": "1",
+     "verify": false,
+     "max": "5",
+     "min": "1",
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    },
+    {
+     "ref": "11681f9dee2140f78d056f863f6d0aee_673f8a6651aea_6745c1b32786a",
+     "type": "textarea",
+     "question": "Além destas, existem outras organizações que você considera ter responsabilidade pela presença destes pontos ? Cite-as avaliando de 1 a 5.",
+     "is_title": false,
+     "is_required": false,
+     "uniqueness": "none",
+     "regex": null,
+     "default": null,
+     "verify": false,
+     "max": null,
+     "min": null,
+     "datetime_format": null,
+     "set_to_current_datetime": false,
+     "possible_answers": [],
+     "jumps": [],
+     "branch": [],
+     "group": []
+    }
+   ]
+  }
+ }
+}

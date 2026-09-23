@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from core.config import Config
-from core.model import Dataset
-from core.normalize import normalize
-from core.schema import parse_form, reconcile
+from geocoleta.core.config import Config
+from geocoleta.core.model import Dataset
+from geocoleta.core.normalize import normalize
+from geocoleta.core.schema import parse_form, reconcile
 
 
 class DataSource(ABC):

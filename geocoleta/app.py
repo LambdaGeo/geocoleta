@@ -1,63 +1,57 @@
-"""Dashboard genérico para formulários Epicollect5.
+"""Aplicação Streamlit do geocoleta.
 
-    streamlit run myframework/app.py                                  # escolhe o projeto na barra lateral
-    streamlit run myframework/app.py -- --config projetos/residuos.yaml
-    DASH_CONFIG=projetos/residuos.yaml streamlit run myframework/app.py
+Normalmente iniciada pela linha de comando:
+
+    geocoleta run projeto.yaml        # um projeto
+    geocoleta run pasta/              # escolhe entre os .yaml da pasta na barra lateral
 """
 import argparse
 import os
-import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT))
+import streamlit as st
 
-import streamlit as st  # noqa: E402
+from geocoleta.ui.compat import FULL_WIDTH
+from geocoleta.core.config import load_config
+from geocoleta.core.context import PageContext
+from geocoleta.core.loader import bootstrap, load_dataset
+from geocoleta.core.registry import ordered_pages
+from geocoleta.ui.filters import render_filters
 
-from core.config import load_config  # noqa: E402
-from core.context import PageContext  # noqa: E402
-from core.loader import bootstrap, load_dataset  # noqa: E402
-from core.registry import ordered_pages  # noqa: E402
-from ui.filters import render_filters  # noqa: E402
-
-PROJECTS = ROOT / "projetos"
+ENV_CONFIG = "GEOCOLETA_CONFIG"
 
 
-def _config_arg():
+def _config_arg() -> Path:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config")
     args, _ = parser.parse_known_args()
-    return args.config or os.environ.get("DASH_CONFIG")
-
-
-def _resolve(path):
-    path = Path(path)
-    return path if path.is_absolute() or path.exists() else ROOT / path
+    return Path(args.config or os.environ.get(ENV_CONFIG) or ".").resolve()
 
 
 @st.cache_data(show_spinner="Carregando dados…")
 def _cached_dataset(config_path: str, mtime: float, bucket: int):
     # mtime invalida o cache quando a config muda; bucket, a cada `cache_minutos`
-    return load_dataset(load_config(config_path))
+    config = load_config(config_path)
+    bootstrap(config)
+    return load_dataset(config)
 
 
 def main():
-    st.set_page_config(page_title="Dashboard de campo", page_icon="📊", layout="wide")
-    bootstrap()
-
-    fixed = _config_arg()
-    if fixed:
-        config_path = _resolve(fixed)
-    else:
-        options = sorted(PROJECTS.glob("*.yaml"))
+    st.set_page_config(page_title="geocoleta", page_icon="📊", layout="wide")
+    target = _config_arg()
+    if target.is_dir():
+        options = sorted(target.glob("*.yaml")) + sorted(target.glob("*/*.yaml"))
         if not options:
-            st.error(f"Nenhum projeto em {PROJECTS}")
-            return
+            st.error(f"Nenhum arquivo .yaml de projeto em {target}")
+            st.stop()
         config_path = st.sidebar.selectbox("Projeto", options, format_func=lambda p: p.stem)
+    else:
+        config_path = target
 
     try:
         config = load_config(config_path)
+        bootstrap(config)
         bucket = int(time.time() // (max(config.cache_minutos, 1) * 60))
         dataset = _cached_dataset(str(config_path), config_path.stat().st_mtime, bucket)
     except Exception as error:  # a mensagem vai para a tela, não para o log do servidor
@@ -68,7 +62,7 @@ def main():
     pages = {name: func for name, func in ordered_pages().items() if func.page_available(base)}
     choice = st.sidebar.radio("Página", list(pages), key="page")
 
-    if st.sidebar.button("↻ Atualizar dados", use_container_width=True):
+    if st.sidebar.button("↻ Atualizar dados", **FULL_WIDTH):
         _cached_dataset.clear()
         st.rerun()
 
