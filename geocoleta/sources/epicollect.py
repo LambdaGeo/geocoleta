@@ -6,6 +6,7 @@ from pathlib import Path
 
 import requests
 
+from geocoleta.core.env import getenv
 from geocoleta.core.registry import source
 from geocoleta.sources.base import DataSource
 
@@ -50,10 +51,10 @@ def get_token(prefix: str) -> str | None:
     """Token OAuth (client credentials). Sem credenciais, acessa como projeto público."""
     if not prefix:
         return None
-    client_id = os.environ.get(f"{prefix}_CLIENT_ID")
-    client_secret = os.environ.get(f"{prefix}_CLIENT_SECRET")
+    client_id = getenv(f"{prefix}_CLIENT_ID")
+    client_secret = getenv(f"{prefix}_CLIENT_SECRET")
     if not client_id or not client_secret:
-        raise EpicollectError(f"Defina {prefix}_CLIENT_ID e {prefix}_CLIENT_SECRET no .env")
+        raise EpicollectError(f"Defina {prefix}_CLIENT_ID e {prefix}_CLIENT_SECRET no .env (ou nos secrets do Streamlit)")
 
     key = hashlib.sha256(client_id.encode()).hexdigest()[:16]
     for cached in (_tokens.get(key), _read_cache().get(key)):

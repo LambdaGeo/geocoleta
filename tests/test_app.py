@@ -41,3 +41,13 @@ def test_cross_and_filter(monkeypatch):
     bairro.select(bairro.options[0]).run()
     assert not at.exception, at.exception
     assert "Filtros: Bairro" in at.caption[0].value
+
+
+def test_dashboard_function_in_user_script(monkeypatch):
+    monkeypatch.setattr(streamlit, "plotly_chart", _plotly_stub)
+    script = Path(__file__).parent / "fixtures" / "streamlit_app.py"
+    monkeypatch.setattr("sys.argv", [str(script)])  # como o `streamlit run` define
+    at = AppTest.from_file(str(script), default_timeout=60)
+    at.run()
+    assert not at.exception, at.exception
+    assert at.title[0].value == "Diagnóstico de Resíduos – Itaqui-Bacanga"

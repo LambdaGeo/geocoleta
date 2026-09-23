@@ -73,6 +73,38 @@ O exemplo usa dados anonimizados de uma pesquisa domiciliar sobre resíduos sól
 Para trabalhar sem internet, use `fonte: {tipo: json, dados: ..., schema: ...}`
 (como em `exemplos/residuos/projeto.yaml`).
 
+## Usar num script Streamlit / publicar
+
+O dashboard também é uma função, para usar no script do próprio projeto:
+
+```python
+# streamlit_app.py (no repositório do projeto)
+import geocoleta
+
+geocoleta.dashboard("projetos/")          # ou "projetos/residuos.yaml"
+```
+
+Caminhos relativos valem a partir do diretório atual ou da pasta do script.
+Rode com `streamlit run streamlit_app.py`.
+
+**Streamlit Community Cloud:** publique o repositório do projeto (com `streamlit_app.py`,
+os `.yaml` e um `requirements.txt` contendo
+`geocoleta @ git+https://github.com/LambdaGeo/geocoleta`) e cole as credenciais em
+*Settings → Secrets*, no formato TOML:
+
+```toml
+RESIDUOS_CLIENT_ID = "..."
+RESIDUOS_CLIENT_SECRET = "..."
+```
+
+O geocoleta procura cada variável primeiro no ambiente/`.env` e depois em `st.secrets`
+(também vale para `${VAR}` na config). O cache de dados é compartilhado entre os
+usuários do servidor, então o Epicollect recebe no máximo uma carga por projeto a cada
+`cache_minutos`.
+
+**Servidor próprio:** `geocoleta run projetos/ --server.port 8501 --server.headless true`
+(por exemplo como serviço systemd, atrás de um nginx com HTTPS).
+
 ## Páginas próprias
 
 Uma página específica do projeto é um arquivo `.py` listado em `extensoes`:
@@ -97,7 +129,8 @@ de dados (ex.: KoboToolbox, CSV) seguem a mesma ideia com `@source("tipo")`.
 ```
 geocoleta/
   cli.py            comandos `geocoleta run` e `geocoleta campos`
-  app.py            aplicação Streamlit (config, cache, filtros, navegação)
+  web.py            `geocoleta.dashboard()`: config, cache, filtros, navegação
+  app.py            script Streamlit usado por `geocoleta run`
   core/schema.py    schema Epicollect -> list[Field]; regra de nomes das colunas; reconcile
   core/normalize.py respostas brutas -> tipos (categorias ordenadas, listas, lat/lon, datas)
   core/config.py    leitura do YAML (+ ${VAR} do .env em `fonte`)

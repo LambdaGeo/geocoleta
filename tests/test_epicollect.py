@@ -44,3 +44,21 @@ def test_rate_limit_backs_off(isolated, monkeypatch):
         with pytest.raises(epicollect.EpicollectError, match="Aguarde"):
             epicollect.get_token("TESTE")
     assert len(calls) == 1
+
+
+def test_credentials_from_streamlit_secrets(isolated, monkeypatch):
+    import streamlit
+
+    monkeypatch.delenv("TESTE_CLIENT_ID")
+    monkeypatch.delenv("TESTE_CLIENT_SECRET")
+    monkeypatch.setattr(streamlit, "secrets", {"TESTE_CLIENT_ID": "id", "TESTE_CLIENT_SECRET": "secret"})
+    assert epicollect.get_token("TESTE") == "tok"
+
+
+def test_missing_credentials_message(isolated, monkeypatch):
+    import streamlit
+
+    monkeypatch.delenv("TESTE_CLIENT_ID")
+    monkeypatch.setattr(streamlit, "secrets", {})
+    with pytest.raises(epicollect.EpicollectError, match="TESTE_CLIENT_ID"):
+        epicollect.get_token("TESTE")

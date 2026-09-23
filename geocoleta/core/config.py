@@ -1,10 +1,11 @@
-import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
 from dotenv import load_dotenv
+
+from geocoleta.core.env import getenv
 
 _ENV = re.compile(r"\$\{([A-Za-z0-9_]+)\}")
 
@@ -13,9 +14,10 @@ def _expand(value):
     if isinstance(value, str):
         def replace(match):
             name = match.group(1)
-            if name not in os.environ:
-                raise KeyError(f"Variável de ambiente não definida: {name}")
-            return os.environ[name]
+            value = getenv(name)
+            if value is None:
+                raise KeyError(f"Variável não definida no .env nem nos secrets do Streamlit: {name}")
+            return value
         return _ENV.sub(replace, value)
     if isinstance(value, list):
         return [_expand(v) for v in value]
