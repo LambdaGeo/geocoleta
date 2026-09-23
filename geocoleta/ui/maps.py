@@ -3,9 +3,9 @@ import html
 import folium
 import streamlit as st
 from folium.plugins import HeatMap
-import streamlit.components.v1 as components
 
 from geocoleta.core.model import Dataset
+from geocoleta.ui.compat import html_frame
 
 POINT_COLOR = "#2a78d6"
 
@@ -46,10 +46,11 @@ def render_map(dataset: Dataset, df, config_map: dict, key="map", height=460):
                 fill=True, fill_color=POINT_COLOR, fill_opacity=0.9,
                 popup=folium.Popup("<br>".join(lines), max_width=260) if lines else None,
             ).add_to(fmap)
-    fmap.fit_bounds([[points[f.lat].min(), points[f.lon].min()], [points[f.lat].max(), points[f.lon].max()]])
+    fmap.fit_bounds([[points[f.lat].min(), points[f.lon].min()], [points[f.lat].max(), points[f.lon].max()]],
+                   max_zoom=15)  # com um só ponto, evita zoom no nível de quadra
 
     # HTML estático: altura exata e sem rerun do Streamlit a cada movimento do mapa
-    components.html(fmap.get_root().render(), height=height)
+    html_frame(fmap.get_root().render(), height)
     if missing:
         st.caption(f"{missing} respostas sem coordenadas não aparecem no mapa.")
     return True
