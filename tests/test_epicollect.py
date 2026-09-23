@@ -4,8 +4,9 @@ from geocoleta.sources import epicollect
 
 
 class FakeResponse:
-    def __init__(self, status, data):
+    def __init__(self, status, data, headers=None):
         self.status_code, self._data, self.text = status, data, ""
+        self.headers = headers or {}
 
     def json(self):
         return self._data
@@ -15,7 +16,7 @@ class FakeResponse:
 def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(epicollect, "TOKEN_CACHE", tmp_path / "tokens.json")
     monkeypatch.setattr(epicollect, "_tokens", {})
-    monkeypatch.setattr(epicollect, "_blocked_until", {})
+    monkeypatch.setattr(epicollect, "_blocked", {"until": 0.0})
     monkeypatch.setenv("TESTE_CLIENT_ID", "id")
     monkeypatch.setenv("TESTE_CLIENT_SECRET", "secret")
     calls = []
@@ -37,13 +38,18 @@ def test_token_is_reused_across_runs(isolated):
     assert oct(epicollect.TOKEN_CACHE.stat().st_mode)[-3:] == "600"
 
 
-def test_rate_limit_backs_off(isolated, monkeypatch):
+def test_rate_limit_respects_retry_after_across_restarts(isolated, monkeypatch):
     calls = []
-    monkeypatch.setattr(epicollect.requests, "post", lambda *a, **k: calls.append(1) or FakeResponse(429, {}))
+    blocked = FakeResponse(429, {}, {"Retry-After": "1305"})
+    monkeypatch.setattr(epicollect.requests, "post", lambda *a, **k: calls.append(1) or blocked)
     for _ in range(3):  # recargas da página não voltam a bater na API
-        with pytest.raises(epicollect.EpicollectError, match="Aguarde"):
+        with pytest.raises(epicollect.EpicollectError, match="Liberação prevista"):
             epicollect.get_token("TESTE")
+    epicollect._blocked["until"] = 0.0  # simula reiniciar o app: o bloqueio vem do disco
+    with pytest.raises(epicollect.EpicollectError, match="Liberação prevista"):
+        epicollect.get_token("TESTE")
     assert len(calls) == 1
+    assert epicollect._blocked_until() - epicollect.time.time() > 1200
 
 
 def test_credentials_from_streamlit_secrets(isolated, monkeypatch):
