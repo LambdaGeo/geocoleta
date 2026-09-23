@@ -1,0 +1,45 @@
+# Mesma pesquisa, lendo arquivos locais (sem internet)
+titulo: "Diagnóstico de Resíduos (offline)"
+subtitulo: "Pesquisa domiciliar sobre resíduos sólidos negligenciados · UFMA"
+
+fonte:
+  tipo: json
+  dados: ../../dados.json
+  schema: ../../pesquisaresiduos__diagnostico__form.json
+
+# Apelidos: nome curto -> ref (basta o final), coluna ou texto da pergunta.
+# Use `python tools/listar_campos.py projetos/residuos.yaml` para ver os campos.
+campos:
+  localizacao: "f27864"
+  idade: "83aec3"
+  genero: "88c343"
+  etnia: "98c336"
+  bairro: "5401ce"
+  ocupacao: "d3aecb"
+  renda: "43aed7"
+  escolaridade: "127852"
+  frequencia_coleta: "23aee0"
+  destino_lixo: "48c35e"
+  separa_reciclagem: "527827"
+  avaliacao_coleta: "d27837"
+
+tipos:
+  bairro: category
+
+# Campos que não aparecem no dashboard
+ignorar: ["2da40f", "3401cb", "f401ca"]   # consentimento, CEP, logradouro
+
+filtros: [created_at, bairro, idade, genero, renda]
+
+destaques:
+  - {campo: frequencia_coleta, por: bairro}
+  - {campo: destino_lixo}
+  - {campo: avaliacao_coleta, por: renda}
+  - {campo: separa_reciclagem, por: escolaridade}
+
+mapa:
+  campo: localizacao
+  popup: [bairro, idade]
+
+fuso: America/Fortaleza
+cache_minutos: 5
