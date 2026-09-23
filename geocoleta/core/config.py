@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 _ENV = re.compile(r"\$\{([A-Za-z0-9_]+)\}")
 
@@ -50,6 +51,9 @@ class Config:
 
 def load_config(path) -> Config:
     path = Path(path).resolve()
+    # .env do diretório atual e da pasta do projeto, antes de expandir ${VAR}
+    load_dotenv(Path.cwd() / ".env")
+    load_dotenv(path.parent / ".env")
     with open(path, encoding="utf-8") as f:
         raw = yaml.safe_load(f) or {}
 

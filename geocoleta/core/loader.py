@@ -4,8 +4,6 @@ import pkgutil
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-
 from geocoleta.core.config import Config
 from geocoleta.core.model import Dataset
 from geocoleta.core.registry import SOURCE_REGISTRY
@@ -14,15 +12,10 @@ _loaded_extensions = set()
 
 
 def bootstrap(config: Config | None = None):
-    """Registra fontes e páginas do pacote e carrega o .env.
+    """Registra fontes e páginas do pacote e, com config, as `extensoes` do projeto.
 
-    O .env é procurado no diretório atual e na pasta do arquivo de config;
-    com config, também importa as `extensoes` do projeto (arquivos .py ou pastas).
+    O .env (diretório atual e pasta do projeto) é carregado por `load_config`.
     """
-    load_dotenv(Path.cwd() / ".env")
-    if config is not None:
-        load_dotenv(config.base_dir / ".env")
-
     for package in ("geocoleta.sources", "geocoleta.views"):
         module = importlib.import_module(package)
         for info in pkgutil.iter_modules(module.__path__):

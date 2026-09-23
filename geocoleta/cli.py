@@ -51,7 +51,10 @@ def main(argv=None):
         return run(args.projeto, extra)
     if extra:
         parser.error(f"argumentos não reconhecidos: {' '.join(extra)}")
-    return fields(args.projeto)
+    try:
+        return fields(args.projeto)
+    except (OSError, KeyError, ValueError, RuntimeError) as error:
+        sys.exit(f"geocoleta: {error}")
 
 
 if __name__ == "__main__":

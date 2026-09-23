@@ -58,3 +58,10 @@ def test_offline_dataset_types():
     assert ds.df[ds.field("16_Beneficirio_de_qu").column].map(type).eq(list).all()
     assert ds.field("localizacao").lat in ds.df.columns
     assert ds.find("2da40f") is None  # ignorado na config
+
+
+def test_env_next_to_config_is_loaded_before_expansion(tmp_path, monkeypatch):
+    monkeypatch.delenv("GEOCOLETA_TESTE_SLUG", raising=False)
+    (tmp_path / ".env").write_text("GEOCOLETA_TESTE_SLUG=meu-projeto\n")
+    (tmp_path / "p.yaml").write_text("fonte:\n  tipo: epicollect\n  projeto: ${GEOCOLETA_TESTE_SLUG}\n")
+    assert load_config(tmp_path / "p.yaml").fonte["projeto"] == "meu-projeto"
