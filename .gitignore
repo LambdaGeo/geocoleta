@@ -6,3 +6,6 @@ __pycache__/
 token.json
 build/
 dist/
+
+# Projetos locais (configs com slugs/credenciais de cada usuário)
+projetos/
