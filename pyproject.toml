@@ -9,7 +9,10 @@ description = "Schema-driven dashboards for field data collection (Epicollect5).
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Sergio Costa, LambdaGeo / UFMA" }]
+authors = [
+    { name = "Sergio Costa, LambdaGeo / UFMA" },
+    { name = "André Moura, LambdaGeo / UFMA" },
+]
 dependencies = [
     "streamlit>=1.39",
     "pandas>=2.0",

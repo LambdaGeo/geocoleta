@@ -148,6 +148,11 @@ docs/PLANO.md       historical development plan
 pytest
 ```
 
+## Authors
+
+- **Sergio Costa** ([@LambdaGeo](https://github.com/LambdaGeo))
+- **André Moura** ([@AndreMouraL](https://github.com/AndreMouraL))
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
