@@ -1,12 +1,12 @@
-"""Variáveis de configuração: ambiente (.env) ou Secrets do Streamlit."""
+"""Configuration variables: environment (.env) or Streamlit Secrets."""
 import os
 
 
 def getenv(name: str) -> str | None:
-    """Valor de `name` no ambiente (inclui o .env) ou em `st.secrets`.
+    """Retrieves value of `name` from environment (including .env) or `st.secrets`.
 
-    `st.secrets` vem de `.streamlit/secrets.toml` ou do painel *Secrets* do
-    Streamlit Community Cloud, onde não há arquivo .env.
+    `st.secrets` comes from `.streamlit/secrets.toml` or Streamlit Community Cloud
+    dashboard Secrets, where there is no local .env file.
     """
     value = os.environ.get(name)
     if value:
@@ -15,6 +15,6 @@ def getenv(name: str) -> str | None:
         import streamlit as st
 
         value = st.secrets.get(name)
-    except Exception:  # sem secrets configurados ou fora do Streamlit
+    except Exception:  # no secrets configured or outside of Streamlit runtime
         return None
     return str(value) if value is not None else None

@@ -2,7 +2,7 @@ from dataclasses import dataclass, field as dc_field
 
 import pandas as pd
 
-# Agrupamento dos tipos do Epicollect5 pelo tratamento que recebem no dashboard
+# Grouping of Epicollect5 types by how they are handled in the dashboard
 CATEGORICAL = {"radio", "dropdown", "searchsingle", "category"}
 MULTI = {"checkbox", "searchmultiple"}
 NUMERIC = {"integer", "decimal"}
@@ -21,12 +21,12 @@ class Field:
     options: list = dc_field(default_factory=list)
     group: str | None = None
     alias: str | None = None
-    system: bool = False  # campos do Epicollect (created_at, created_by...)
-    question: str = ""    # texto original da pergunta (usado para casar colunas)
+    system: bool = False  # Epicollect system fields (created_at, created_by...)
+    question: str = ""    # original question text (used to match columns)
 
     @property
     def kind(self) -> str:
-        """Categoria usada pela UI: categorical, multi, numeric, date, location, text, media ou other."""
+        """Category used by the UI: categorical, multi, numeric, date, location, text, media or other."""
         for kind, types in (
             ("categorical", CATEGORICAL),
             ("multi", MULTI),
@@ -57,10 +57,10 @@ class Dataset:
     warnings: list = dc_field(default_factory=list)
 
     def field(self, key: str) -> Field:
-        """Busca um campo por alias, ref (completo ou sufixo), coluna ou texto da pergunta."""
+        """Looks up a field by alias, ref (full or suffix), column, or question text."""
         found = self.find(key)
         if found is None:
-            raise KeyError(f"Campo não encontrado: {key!r}")
+            raise KeyError(f"Field not found: {key!r}")
         return found
 
     def find(self, key: str) -> Field | None:
@@ -77,7 +77,7 @@ class Dataset:
             if len(hits) == 1:
                 return hits[0]
             if len(hits) > 1:
-                raise KeyError(f"Campo ambíguo: {key!r} ({', '.join(f.column for f in hits)})")
+                raise KeyError(f"Ambiguous field: {key!r} ({', '.join(f.column for f in hits)})")
         return None
 
     def of_kind(self, *kinds) -> list:

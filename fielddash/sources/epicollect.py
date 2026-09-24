@@ -46,7 +46,7 @@ def _write_cache(update):
     try:
         cache = _read_cache()
         tokens = {k: v for k, v in cache.get("tokens", {}).items() if v[1] > time.time()}
-        cache = update({"tokens": tokens, "bloqueado_ate": cache.get("bloqueado_ate", 0)})
+        cache = update({"tokens": tokens, "blocked_until": cache.get("blocked_until") or cache.get("bloqueado_ate", 0)})
         TOKEN_CACHE.parent.mkdir(parents=True, exist_ok=True)
         TOKEN_CACHE.touch(mode=0o600, exist_ok=True)
         TOKEN_CACHE.write_text(json.dumps(cache))
@@ -55,7 +55,9 @@ def _write_cache(update):
 
 
 def _blocked_until() -> float:
-    return max(_blocked["until"], float(_read_cache().get("bloqueado_ate", 0)))
+    cache = _read_cache()
+    cached_val = cache.get("blocked_until") or cache.get("bloqueado_ate", 0)
+    return max(_blocked["until"], float(cached_val))
 
 
 def _block(response):
@@ -67,7 +69,7 @@ def _block(response):
     _blocked["until"] = until
 
     def update(cache):
-        cache["bloqueado_ate"] = until
+        cache["blocked_until"] = until
         return cache
 
     _write_cache(update)

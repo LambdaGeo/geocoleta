@@ -3,9 +3,9 @@ SOURCE_REGISTRY = {}
 
 
 def page(name: str, order: int = 100, available=None):
-    """Registra uma página. A função recebe um PageContext.
+    """Registers a dashboard page. The decorated function receives a PageContext.
 
-    `available(ctx) -> bool` esconde a página quando não se aplica ao projeto.
+    `available(ctx) -> bool` hides the page when it does not apply to the project.
     """
     def decorator(func):
         func.page_order = order
@@ -16,7 +16,7 @@ def page(name: str, order: int = 100, available=None):
 
 
 def source(kind: str):
-    """Registra a classe de uma fonte de dados pelo valor de `fonte.tipo` na config."""
+    """Registers a data source class by the value of `source.type` (or `fonte.tipo`) in config."""
     def decorator(cls):
         SOURCE_REGISTRY[kind] = cls
         return cls

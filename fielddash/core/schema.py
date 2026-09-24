@@ -1,10 +1,10 @@
-"""Leitura do schema de formulários do Epicollect5.
+"""Reading Epicollect5 form schemas.
 
-As colunas do export do Epicollect são nomeadas como ``f"{idx}_{pergunta}"[:20]``,
-onde ``idx`` conta todas as entradas do formulário (inclusive grupos, exceto readme)
-e a pergunta perde tudo que não for letra ASCII, dígito ou espaço. Como esse nome
-muda quando perguntas são inseridas ou removidas, o dashboard identifica cada
-pergunta pelo ``ref`` e resolve a coluna em tempo de execução.
+Epicollect export columns are named as ``f"{idx}_{question}"[:20]``,
+where ``idx`` counts all form entries (including groups, except readme)
+and the question drops anything that is not an ASCII letter, digit, or space.
+Because this name changes when questions are inserted or removed, the dashboard
+identifies each question by its ``ref`` and resolves the column at runtime.
 """
 import html
 import re
@@ -12,11 +12,11 @@ import re
 from fielddash.core.model import Field
 
 SYSTEM_FIELDS = [
-    Field(ref="created_at", column="created_at", label="Data da coleta", type="datetime", system=True),
-    Field(ref="created_by", column="created_by", label="Coletor", type="category", system=True),
+    Field(ref="created_at", column="created_at", label="Collection date", type="datetime", system=True),
+    Field(ref="created_by", column="created_by", label="Collector", type="category", system=True),
 ]
 
-# Tipos que não viram coluna no export principal
+# Types that do not become a column in the main export
 _NO_COLUMN = {"group", "readme", "branch"}
 
 
@@ -36,18 +36,18 @@ def clean_label(question: str) -> str:
 
 
 def find_form(schema: dict, form_ref: str | None = None) -> dict:
-    """Aceita o JSON do formulário (data.form) ou o export do projeto (data.project.forms)."""
+    """Accepts form JSON (data.form) or project export (data.project.forms)."""
     data = schema.get("data", schema)
     if "form" in data:
         return data["form"]
     forms = data.get("project", data).get("forms", [])
     if not forms:
-        raise ValueError("Schema sem formulários")
+        raise ValueError("Schema contains no forms")
     if form_ref:
         for form in forms:
             if form["ref"] == form_ref:
                 return form
-        raise ValueError(f"Formulário {form_ref!r} não encontrado no projeto")
+        raise ValueError(f"Form {form_ref!r} not found in project")
     return forms[0]
 
 
@@ -85,11 +85,11 @@ def _strip_index(column: str) -> str:
 
 
 def reconcile(fields: list, columns) -> tuple:
-    """Confere se cada campo tem coluna nos dados.
+    """Checks whether each field has a corresponding column in the data.
 
-    Quando a coluna esperada não existe (ex.: schema local desatualizado e
-    perguntas renumeradas), tenta casar pelo texto da pergunta, ignorando o
-    índice. Nunca casa por posição. Retorna (campos_ok, avisos).
+    When the expected column does not exist (e.g. outdated local schema and
+    renumbered questions), attempts to match by question text, ignoring the
+    index. Never matches by position. Returns (matched_fields, warnings).
     """
     columns = list(columns)
     if not columns:
@@ -109,15 +109,15 @@ def reconcile(fields: list, columns) -> tuple:
             and len(_strip_index(c)) >= min(len(slug), 8)
         ]
         if len(candidates) == 1:
-            warnings.append(f"'{f.label}': coluna {f.column!r} não encontrada, usando {candidates[0]!r}")
+            warnings.append(f"'{f.label}': column {f.column!r} not found, using {candidates[0]!r}")
             f.column = candidates[0]
             used.add(f.column)
             matched.append(f)
         elif not f.system:
-            warnings.append(f"'{f.label}': sem coluna correspondente nos dados (esperada {f.column!r})")
+            warnings.append(f"'{f.label}': no matching column in data (expected {f.column!r})")
 
     extra = [c for c in columns if c not in used and c not in ("ec5_uuid", "uploaded_at", "title")
              and not c.startswith("ec5_")]
     if extra:
-        warnings.append(f"Colunas nos dados sem pergunta no schema: {', '.join(extra)}")
+        warnings.append(f"Columns in data without question in schema: {', '.join(extra)}")
     return matched, warnings
