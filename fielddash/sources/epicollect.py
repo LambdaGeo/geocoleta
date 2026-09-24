@@ -150,17 +150,29 @@ class EpicollectSource(DataSource):
             raise KeyError("Epicollect source requires 'project' (or 'projeto')")
         return proj
 
-    def _get(self, url, params=None):
+    def _get(self, url, params=None, max_retries: int = 2):
         creds = self.options.get("credentials") or self.options.get("credenciais")
         token = get_token(creds)
         headers = {"Authorization": f"Bearer {token}"} if token else {}
-        response = requests.get(url, headers=headers, params=params, timeout=TIMEOUT)
-        if response.status_code == 429:
-            raise EpicollectError(f"API error: Epicollect rate limit exceeded; retry later "
-                                  f"(Retry-After: {response.headers.get('Retry-After', '?')} s)")
-        if response.status_code != 200:
-            raise EpicollectError(f"Epicollect API error ({response.status_code}): {_error_text(response)}")
-        return response.json()
+
+        for attempt in range(max_retries + 1):
+            response = requests.get(url, headers=headers, params=params, timeout=TIMEOUT)
+            if response.status_code == 429:
+                try:
+                    retry_after = int(response.headers.get("Retry-After", 20))
+                except (TypeError, ValueError):
+                    retry_after = 20
+
+                if attempt < max_retries and retry_after <= 60:
+                    time.sleep(retry_after + 1)
+                    continue
+
+                raise EpicollectError(
+                    f"API error: Epicollect rate limit exceeded; retry later (Retry-After: {retry_after} s)"
+                )
+            if response.status_code != 200:
+                raise EpicollectError(f"Epicollect API error ({response.status_code}): {_error_text(response)}")
+            return response.json()
 
     def fetch_schema(self):
         try:
@@ -184,3 +196,4 @@ class EpicollectSource(DataSource):
             if params["page"] >= int(meta.get("last_page") or 1):
                 return entries
             params["page"] += 1
+            time.sleep(0.3)  # brief pause between paginated requests to respect rate limits

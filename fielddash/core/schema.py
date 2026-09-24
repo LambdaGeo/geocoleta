@@ -92,6 +92,8 @@ def reconcile(fields: list, columns) -> tuple:
     índice. Nunca casa por posição. Retorna (campos_ok, avisos).
     """
     columns = list(columns)
+    if not columns:
+        return fields, []
     available = set(columns)
     used = {f.column for f in fields if f.column in available}
     matched, warnings = [], []

@@ -11,21 +11,23 @@ def _read(path):
 
 @source("json")
 class JsonFileSource(DataSource):
-    """Data and schema saved on disk (useful offline and for testing).
+    """Data and schema saved on disk (useful offline, for testing, or schema inspection).
 
     source:
       type: json
-      data: ../dados.json          # {"data": [...]} or API export {"data": {"entries": [...]}}
-      schema: ../formulario.json
+      schema: formulario.json
+      data: dados.json          # optional: omitted data defaults to an empty dataset
     """
 
     def fetch_schema(self):
+        if "schema" not in self.options:
+            raise KeyError("JSON source requires 'schema' path")
         return _read(self.config.resolve(self.options["schema"]))
 
     def fetch_entries(self):
         target = self.options.get("data") or self.options.get("dados")
         if not target:
-            raise KeyError("JSON source requires 'data' (or 'dados') path")
+            return []
         data = _read(self.config.resolve(target))
         data = data.get("data", data) if isinstance(data, dict) else data
         if isinstance(data, dict):
