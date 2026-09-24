@@ -6,22 +6,22 @@ from pathlib import Path
 
 import requests
 
-from geocoleta.core.env import getenv
-from geocoleta.core.registry import source
-from geocoleta.sources.base import DataSource
+from fielddash.core.env import getenv
+from fielddash.core.registry import source
+from fielddash.sources.base import DataSource
 
 API = "https://five.epicollect.net/api"
 PER_PAGE = 1000
 TIMEOUT = 60
 
-# Tokens valem ~2h e o Epicollect permite poucos pedidos de token por IP (erro 429 com
-# Retry-After). Tokens e o fim de um bloqueio ficam num arquivo só do usuário, para que
-# reiniciar o app ou recarregar a página não gere novos pedidos. Chaves: hash do client_id.
-TOKEN_CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "geocoleta" / "tokens.json"
-RATE_LIMIT_MSG = "o Epicollect limitou os pedidos de acesso desta máquina (muitos acessos seguidos)"
-DEFAULT_BACKOFF = 900  # sem Retry-After na resposta
+# Tokens are valid for ~2h and Epicollect limits token requests per IP (429 Retry-After).
+# Tokens and active blocks are stored in a user-only file so app restarts don't spam the API.
+_cache_dir = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "fielddash"
+TOKEN_CACHE = _cache_dir / "tokens.json"
+RATE_LIMIT_MSG = "Epicollect rate-limited authentication requests from this IP (too many attempts)"
+DEFAULT_BACKOFF = 900  # when no Retry-After in response
 
-_tokens = {}  # hash do client_id -> (token, expira_em)
+_tokens = {}  # sha256(client_id)[:16] -> (token, expires_at)
 _blocked = {"until": 0.0}
 
 
@@ -31,6 +31,11 @@ class EpicollectError(RuntimeError):
 
 def _read_cache() -> dict:
     try:
+        if not TOKEN_CACHE.exists():
+            # Check legacy geocoleta cache location if present
+            legacy = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "geocoleta" / "tokens.json"
+            if legacy.exists():
+                return json.loads(legacy.read_text())
         data = json.loads(TOKEN_CACHE.read_text())
         return data if isinstance(data, dict) else {}
     except (OSError, ValueError):
@@ -46,7 +51,7 @@ def _write_cache(update):
         TOKEN_CACHE.touch(mode=0o600, exist_ok=True)
         TOKEN_CACHE.write_text(json.dumps(cache))
     except OSError:
-        pass  # sem cache em disco, tudo continua valendo em memória
+        pass
 
 
 def _blocked_until() -> float:
@@ -71,18 +76,18 @@ def _block(response):
 
 def _rate_limit_error(until: float) -> "EpicollectError":
     when = time.strftime("%H:%M", time.localtime(until))
-    return EpicollectError(f"Falha na autenticação: {RATE_LIMIT_MSG}. Liberação prevista às {when}; "
-                           "até lá o geocoleta não tenta de novo (novas tentativas prolongariam o bloqueio).")
+    return EpicollectError(f"Authentication failed: {RATE_LIMIT_MSG}. Retry allowed at {when}; "
+                           "fielddash will not attempt requests until then to avoid extending the block.")
 
 
 def get_token(prefix: str) -> str | None:
-    """Token OAuth (client credentials). Sem credenciais, acessa como projeto público."""
+    """OAuth client credentials token. Without credentials, accesses project as public."""
     if not prefix:
         return None
     client_id = getenv(f"{prefix}_CLIENT_ID")
     client_secret = getenv(f"{prefix}_CLIENT_SECRET")
     if not client_id or not client_secret:
-        raise EpicollectError(f"Defina {prefix}_CLIENT_ID e {prefix}_CLIENT_SECRET no .env (ou nos secrets do Streamlit)")
+        raise EpicollectError(f"Set {prefix}_CLIENT_ID and {prefix}_CLIENT_SECRET in .env (or Streamlit secrets)")
 
     key = hashlib.sha256(client_id.encode()).hexdigest()[:16]
     for cached in (_tokens.get(key), _read_cache().get("tokens", {}).get(key)):
@@ -102,7 +107,7 @@ def get_token(prefix: str) -> str | None:
     if response.status_code == 429:
         raise _rate_limit_error(_block(response))
     if response.status_code != 200:
-        raise EpicollectError(f"Falha na autenticação ({response.status_code}): {_error_text(response)}")
+        raise EpicollectError(f"Authentication failed ({response.status_code}): {_error_text(response)}")
     data = response.json()
     token, expires = data["access_token"], time.time() + data.get("expires_in", 7200)
     _tokens[key] = (token, expires)
@@ -128,30 +133,38 @@ def _error_text(response) -> str:
 
 @source("epicollect")
 class EpicollectSource(DataSource):
-    """Dados direto da API do Epicollect5, com schema atualizado a cada carga.
+    """Data fetched directly from Epicollect5 API, updating schema on reload.
 
-    fonte:
-      tipo: epicollect
-      projeto: ${PROJECT_RESIDUOS}     # slug do projeto
-      form_ref: ${FORM_RESIDUOS_REF}   # opcional (padrão: primeiro formulário)
-      credenciais: RESIDUOS            # usa RESIDUOS_CLIENT_ID / RESIDUOS_CLIENT_SECRET
-      schema: ../form.json             # opcional: schema local se a API do projeto falhar
+    source:
+      type: epicollect
+      project: ${PROJECT_RESIDUOS}     # project slug
+      form_ref: ${FORM_RESIDUOS_REF}   # optional (default: first form)
+      credentials: RESIDUOS            # uses RESIDUOS_CLIENT_ID / RESIDUOS_CLIENT_SECRET
+      schema: ../form.json             # optional: local schema fallback if project API fails
     """
 
+    @property
+    def project(self) -> str:
+        proj = self.options.get("project") or self.options.get("projeto")
+        if not proj:
+            raise KeyError("Epicollect source requires 'project' (or 'projeto')")
+        return proj
+
     def _get(self, url, params=None):
-        token = get_token(self.options.get("credenciais"))
+        creds = self.options.get("credentials") or self.options.get("credenciais")
+        token = get_token(creds)
         headers = {"Authorization": f"Bearer {token}"} if token else {}
         response = requests.get(url, headers=headers, params=params, timeout=TIMEOUT)
         if response.status_code == 429:
-            raise EpicollectError(f"Erro da API: o Epicollect limitou as requisições; tente mais tarde "
+            raise EpicollectError(f"API error: Epicollect rate limit exceeded; retry later "
                                   f"(Retry-After: {response.headers.get('Retry-After', '?')} s)")
         if response.status_code != 200:
-            raise EpicollectError(f"Erro da API Epicollect ({response.status_code}): {_error_text(response)}")
+            raise EpicollectError(f"Epicollect API error ({response.status_code}): {_error_text(response)}")
         return response.json()
 
     def fetch_schema(self):
         try:
-            return self._get(f"{API}/export/project/{self.options['projeto']}")
+            return self._get(f"{API}/export/project/{self.project}")
         except (EpicollectError, requests.RequestException):
             if "schema" not in self.options:
                 raise
@@ -165,7 +178,7 @@ class EpicollectSource(DataSource):
 
         entries = []
         while True:
-            data = self._get(f"{API}/export/entries/{self.options['projeto']}", params)
+            data = self._get(f"{API}/export/entries/{self.project}", params)
             entries.extend(data["data"]["entries"])
             meta = data.get("meta", {})
             if params["page"] >= int(meta.get("last_page") or 1):

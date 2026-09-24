@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "geocoleta"
+name = "fielddash"
 version = "0.1.0"
-description = "Dashboards para dados de coleta de campo (Epicollect5), guiados pelo schema do formulário."
+description = "Schema-driven dashboards for field data collection (Epicollect5)."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -25,10 +25,11 @@ dependencies = [
 dev = ["pytest>=8.0"]
 
 [project.scripts]
-geocoleta = "geocoleta.cli:main"
+fielddash = "fielddash.cli:main"
+geocoleta = "fielddash.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["geocoleta*"]
+include = ["fielddash*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,153 +1,153 @@
-# geocoleta
+# fielddash
 
-Dashboards para dados de **coleta de campo** (Epicollect5), montados a partir do
-**schema do formulário**. Cada pergunta é identificada pelo `ref` do Epicollect, que é
-estável, e o tipo dela (`radio`, `checkbox`, `integer`, `location`, ...) decide o filtro,
-o gráfico e o mapa. Mudar, inserir ou reordenar perguntas no formulário não quebra o
-dashboard, e um novo trabalho de campo precisa só de um arquivo YAML.
+Schema-driven dashboards for **field data collection** (Epicollect5), built directly from the **form schema**. Every question is identified by Epicollect's stable `ref`, and its input type (`radio`, `checkbox`, `integer`, `location`, ...) automatically dictates the filter, chart, and map representation. Modifying, adding, or reordering questions in the form does not break the dashboard, and setting up a new fieldwork survey requires only a YAML configuration file.
 
-Páginas prontas: **Visão geral** (indicadores, mapa, coletas no tempo, coletores),
-**Destaques** (gráficos escolhidos na config), **Perguntas** (todas as perguntas, com
-busca e cruzamento com outra pergunta) e **Dados** (tabela, CSV e Excel).
+Ready-to-use pages:
+- **Overview**: summary indicators, map, submissions over time, collectors.
+- **Highlights**: curated charts configured in your YAML.
+- **Questions**: all questions grouped by section, with search, text-field toggle, and dynamic cross-tabulation.
+- **Data**: searchable table with CSV and Excel export.
 
-## Instalação
+## Installation
 
 ```bash
-pip install git+https://github.com/LambdaGeo/geocoleta
-# ou, para desenvolver:
-git clone https://github.com/LambdaGeo/geocoleta && cd geocoleta
+pip install git+https://github.com/LambdaGeo/fielddash
+# or for development:
+git clone https://github.com/LambdaGeo/fielddash && cd fielddash
 pip install -e ".[dev]"
 ```
 
-## Experimente
+## Quickstart
 
 ```bash
-geocoleta run exemplos/residuos/projeto.yaml
+fielddash run exemplos/residuos/projeto.yaml
 ```
 
-O exemplo usa dados anonimizados de uma pesquisa domiciliar sobre resíduos sólidos
-(Itaqui-Bacanga, São Luís – MA) e mostra uma página própria do projeto (`Reciclagem`).
+The example uses anonymized household survey data on solid waste management (Itaqui-Bacanga, São Luís – MA) and showcases a custom project page (`Reciclagem`).
 
-## Novo projeto de campo
+## Setting Up a New Field Project
 
-1. Crie uma pasta para o projeto com um `.env` contendo as credenciais do app do
-   Epicollect (criado na área de administração do projeto, em *Apps*):
-   ```
-   MEUPROJ_CLIENT_ID=...
-   MEUPROJ_CLIENT_SECRET=...
-   ```
-   Projetos públicos não precisam de credenciais: omita `credenciais` na config.
-2. Crie `meuprojeto.yaml`:
-   ```yaml
-   titulo: "Meu levantamento"
-   fonte:
-     tipo: epicollect
-     projeto: slug-do-projeto      # ou ${VARIAVEL} do .env
-     credenciais: MEUPROJ
-   ```
-3. Liste os campos para escolher apelidos, filtros e destaques:
+1. Create a project folder with a `.env` file containing your Epicollect app credentials (generated under *Apps* in your project's administration area):
    ```bash
-   geocoleta campos meuprojeto.yaml
+   MYPROJ_CLIENT_ID=...
+   MYPROJ_CLIENT_SECRET=...
    ```
-4. Complete a config (todas as chaves abaixo são opcionais) e rode `geocoleta run meuprojeto.yaml`:
+   *Public projects do not require credentials: simply omit `credentials` in the config.*
+
+2. Create `myproject.yaml`:
    ```yaml
-   subtitulo: "Equipe, instituição..."
-   campos:            # apelido -> final do ref, coluna ou texto da pergunta
-     bairro: "5401ce"
-     destino_lixo: "48c35e"
-   tipos:             # força um tipo (ex.: texto livre tratado como categoria)
-     bairro: category
-   ignorar: [created_by, "3401cb"]   # esconde campos (ex.: e-mail do coletor)
-   filtros: [created_at, bairro]
-   destaques:
-     - {campo: destino_lixo, por: bairro, titulo: "Destino do lixo por bairro"}
-   secoes:            # abas da página Perguntas (padrão: grupos do formulário)
-     - {titulo: "Perfil", campos: [idade, genero]}
-   mapa: {campo: localizacao, popup: [bairro]}
-   extensoes: [paginas]              # .py ou pastas com páginas próprias
-   fuso: America/Fortaleza
-   cache_minutos: 5
+   title: "My Field Survey"
+   source:
+     type: epicollect
+     project: project-slug      # or ${VARIABLE} from .env
+     credentials: MYPROJ
    ```
 
-`geocoleta run pasta/` abre todos os `.yaml` da pasta, com um seletor de projeto.
-Para trabalhar sem internet, use `fonte: {tipo: json, dados: ..., schema: ...}`
-(como em `exemplos/residuos/projeto.yaml`).
+3. Inspect the form fields to select aliases, filters, and highlights:
+   ```bash
+   fielddash fields myproject.yaml
+   ```
 
-## Usar num script Streamlit / publicar
+4. Complete the configuration (all keys below are optional) and run `fielddash run myproject.yaml`:
+   ```yaml
+   subtitle: "Research team, institution..."
+   fields:            # alias -> ref suffix, column, or question label
+     neighborhood: "5401ce"
+     waste_dest: "48c35e"
+   types:             # force type (e.g. treat free text as category)
+     neighborhood: category
+   ignore: [created_by, "3401cb"]   # hide fields (e.g. collector email)
+   filters: [created_at, neighborhood]
+   highlights:
+     - {field: waste_dest, by: neighborhood, title: "Waste destination by neighborhood"}
+   sections:          # tabs on the Questions page (default: form groups)
+     - {title: "Profile", fields: [age, gender]}
+   map: {field: location, popup: [neighborhood]}
+   extensions: [pages]              # .py files or directories with custom pages
+   timezone: America/Fortaleza
+   cache_minutes: 5
+   ```
+   *(Note: Portuguese configuration keys such as `titulo`, `fonte`, `campos`, `ignorar`, etc., are also supported for backwards compatibility).*
 
-O dashboard também é uma função, para usar no script do próprio projeto:
+Running `fielddash run folder/` will scan all `.yaml` files in the directory and present a project selector in the sidebar.
+To work offline or test without internet access, use `source: {type: json, data: ..., schema: ...}` (as shown in `exemplos/residuos/projeto.yaml`).
+
+## Using in a Custom Streamlit Script / Deployment
+
+The dashboard can also be invoked as a Python function inside your own Streamlit app:
 
 ```python
-# streamlit_app.py (no repositório do projeto)
-import geocoleta
+# streamlit_app.py
+import fielddash
 
-geocoleta.dashboard("projetos/")          # ou "projetos/residuos.yaml"
+fielddash.dashboard("projects/")          # or "projects/waste.yaml"
 ```
 
-Caminhos relativos valem a partir do diretório atual ou da pasta do script.
-Rode com `streamlit run streamlit_app.py`.
+Relative paths are resolved relative to the current directory or the script folder.
+Run with:
+```bash
+streamlit run streamlit_app.py
+```
 
-**Streamlit Community Cloud:** publique o repositório do projeto (com `streamlit_app.py`,
-os `.yaml` e um `requirements.txt` contendo
-`geocoleta @ git+https://github.com/LambdaGeo/geocoleta`) e cole as credenciais em
-*Settings → Secrets*, no formato TOML:
+### Streamlit Community Cloud
+Deploy your repository (containing `streamlit_app.py`, your `.yaml` configs, and a `requirements.txt` with `fielddash @ git+https://github.com/LambdaGeo/fielddash`), then add credentials in *Settings → Secrets* in TOML format:
 
 ```toml
-RESIDUOS_CLIENT_ID = "..."
-RESIDUOS_CLIENT_SECRET = "..."
+MYPROJ_CLIENT_ID = "..."
+MYPROJ_CLIENT_SECRET = "..."
 ```
 
-O geocoleta procura cada variável primeiro no ambiente/`.env` e depois em `st.secrets`
-(também vale para `${VAR}` na config). O cache de dados é compartilhado entre os
-usuários do servidor, então o Epicollect recebe no máximo uma carga por projeto a cada
-`cache_minutos`.
+`fielddash` checks environment variables and `.env` first, then falls back to `st.secrets` (also resolving `${VAR}` references in YAML). The data cache is shared among server sessions, so Epicollect receives at most one request per project every `cache_minutes`.
 
-**Servidor próprio:** `geocoleta run projetos/ --server.port 8501 --server.headless true`
-(por exemplo como serviço systemd, atrás de um nginx com HTTPS).
+### Self-Hosted Server
+```bash
+fielddash run projects/ --server.port 8501 --server.headless true
+```
+(e.g., as a systemd service behind an Nginx reverse proxy with HTTPS).
 
-## Páginas próprias
+## Custom Pages
 
-Uma página específica do projeto é um arquivo `.py` listado em `extensoes`:
+A project-specific page is a standard `.py` file listed in `extensions`:
 
 ```python
-from geocoleta.core.registry import page
-from geocoleta.ui.charts import render_field
+from fielddash.core.registry import page
+from fielddash.ui.charts import render_field
 
 
-@page("Reciclagem", order=40)
+@page("Recycling", order=40)
 def render(ctx):
     ds = ctx.dataset
-    render_field(ds, ctx.df, ds.field("separa_reciclagem"), by=ds.field("bairro"))
+    render_field(ds, ctx.df, ds.field("recycle_habit"), by=ds.field("neighborhood"))
 ```
 
-`ctx.df` já vem com os filtros da barra lateral aplicados, e `ds.field("apelido")` devolve
-o campo (coluna, tipo, opções) sem depender do nome da coluna no export. Novas fontes
-de dados (ex.: KoboToolbox, CSV) seguem a mesma ideia com `@source("tipo")`.
+- `ctx.df` provides the data with all active sidebar filters applied.
+- `ds.field("alias")` resolves the field (column, type, options) dynamically by its stable schema ref.
+- Additional data sources (e.g. KoboToolbox, CSV) can be registered with `@source("type")`.
 
-## Estrutura
+## Project Structure
 
 ```
-geocoleta/
-  cli.py            comandos `geocoleta run` e `geocoleta campos`
-  web.py            `geocoleta.dashboard()`: config, cache, filtros, navegação
-  app.py            script Streamlit usado por `geocoleta run`
-  core/schema.py    schema Epicollect -> list[Field]; regra de nomes das colunas; reconcile
-  core/normalize.py respostas brutas -> tipos (categorias ordenadas, listas, lat/lon, datas)
-  core/config.py    leitura do YAML (+ ${VAR} do .env em `fonte`)
-  sources/          fontes de dados (@source): epicollect (API, paginação), json (arquivos)
-  ui/               filtros, gráficos e mapa gerados pelo tipo do campo
-  views/            páginas (@page): Visão geral, Destaques, Perguntas, Dados
-exemplos/           projetos de exemplo com dados anonimizados
-tests/              pytest (schema, renumeração de perguntas, todas as páginas via AppTest)
-docs/PLANO.md       plano de desenvolvimento (histórico)
+fielddash/
+  cli.py            CLI commands `fielddash run` and `fielddash fields`
+  web.py            `fielddash.dashboard()`: config, cache, filters, navigation
+  app.py            Streamlit entry point used by `fielddash run`
+  core/schema.py    Epicollect schema parser -> list[Field], column naming, reconciliation
+  core/normalize.py raw entries -> typed series (ordered categories, lists, coords, datetimes)
+  core/config.py    YAML config parser (+ ${VAR} resolution from .env and secrets)
+  sources/          data source plugins (@source): epicollect (API, pagination), json
+  ui/               dynamic filters, charts, and maps based on field types
+  views/            default pages (@page): Overview, Highlights, Questions, Data
+exemplos/           example projects with anonymized datasets
+tests/              pytest test suite (schema, index shifting, AppTest integration)
+docs/PLANO.md       historical development plan
 ```
 
-## Testes
+## Running Tests
 
 ```bash
-python -m pytest -q
+pytest
 ```
 
-## Licença
+## License
 
-MIT — veja [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

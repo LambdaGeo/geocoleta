@@ -1,24 +1,24 @@
-"""Script Streamlit usado por `geocoleta run`.
+"""Streamlit script used by `fielddash run`.
 
-    geocoleta run projeto.yaml        # um projeto
-    geocoleta run pasta/              # escolhe entre os .yaml da pasta na barra lateral
+    fielddash run project.yaml        # single project
+    fielddash run dir/                # choose between .yaml projects in sidebar
 
-Para publicar (ex.: Streamlit Community Cloud), use `geocoleta.dashboard(...)`
-num script do próprio projeto.
+To deploy (e.g. Streamlit Community Cloud), use `fielddash.dashboard(...)`
+in your project's script.
 """
 import argparse
 import os
 
-from geocoleta.web import dashboard
+from fielddash.web import dashboard
 
-ENV_CONFIG = "GEOCOLETA_CONFIG"
+ENV_CONFIG = "FIELDDASH_CONFIG"
 
 
 def _config_arg() -> str:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config")
     args, _ = parser.parse_known_args()
-    return args.config or os.environ.get(ENV_CONFIG) or "."
+    return args.config or os.environ.get(ENV_CONFIG) or os.environ.get("GEOCOLETA_CONFIG") or "."
 
 
 dashboard(_config_arg())

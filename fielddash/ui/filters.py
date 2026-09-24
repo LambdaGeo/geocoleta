@@ -4,7 +4,7 @@ import datetime as dt
 import pandas as pd
 import streamlit as st
 
-from geocoleta.core.model import Dataset, Field
+from fielddash.core.model import Dataset, Field
 
 FILTERABLE = ("categorical", "multi", "numeric", "date")
 

@@ -5,8 +5,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from geocoleta.ui.compat import FULL_WIDTH
-from geocoleta.core.model import Dataset, Field
+from fielddash.ui.compat import FULL_WIDTH
+from fielddash.core.model import Dataset, Field
 
 # Paleta categórica validada (ordem fixa, nunca reciclada); além de 8 grupos, o resto vira "Outros"
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]

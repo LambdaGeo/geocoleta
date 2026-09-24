@@ -1,16 +1,16 @@
-"""Linha de comando do geocoleta.
+"""Command line interface for fielddash.
 
-    geocoleta run projeto.yaml [opções do streamlit, ex.: --server.port 8600]
-    geocoleta run pasta/                 # escolhe o projeto na barra lateral
-    geocoleta campos projeto.yaml        # lista os campos para escrever a config
+    fielddash run project.yaml [streamlit options, e.g. --server.port 8600]
+    fielddash run dir/                   # select project in sidebar
+    fielddash fields project.yaml        # inspect form fields to write config
 """
 import argparse
 import subprocess
 import sys
 from pathlib import Path
 
-from geocoleta.core.config import load_config
-from geocoleta.core.loader import bootstrap, load_dataset
+from fielddash.core.config import load_config
+from fielddash.core.loader import bootstrap, load_dataset
 
 APP = Path(__file__).resolve().parent / "app.py"
 
@@ -18,7 +18,7 @@ APP = Path(__file__).resolve().parent / "app.py"
 def run(target: str, streamlit_args: list) -> int:
     path = Path(target).resolve()
     if not path.exists():
-        sys.exit(f"Não encontrado: {path}")
+        sys.exit(f"Not found: {path}")
     command = [sys.executable, "-m", "streamlit", "run", str(APP), *streamlit_args, "--", "--config", str(path)]
     return subprocess.call(command)
 
@@ -27,8 +27,8 @@ def fields(target: str) -> int:
     config = load_config(target)
     bootstrap(config)
     dataset = load_dataset(config)
-    print(f"{dataset.title}: {len(dataset.df)} respostas\n")
-    print(f"{'ref (final)':<14}{'apelido':<20}{'tipo':<12}{'coluna':<22}pergunta")
+    print(f"{dataset.title}: {len(dataset.df)} responses\n")
+    print(f"{'ref (suffix)':<14}{'alias':<20}{'type':<12}{'column':<22}question")
     for f in dataset.fields:
         ref = f.ref if f.system else f.ref[-6:]
         print(f"{ref:<14}{f.alias or '':<20}{f.type:<12}{f.column:<22}{f.label[:70]}")
@@ -38,23 +38,24 @@ def fields(target: str) -> int:
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="geocoleta", description="Dashboards para dados de coleta de campo.")
+    parser = argparse.ArgumentParser(prog="fielddash", description="Schema-driven dashboards for field data collection.")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    run_parser = commands.add_parser("run", help="abre o dashboard de um projeto (.yaml) ou de uma pasta de projetos")
-    run_parser.add_argument("projeto", nargs="?", default=".")
-    fields_parser = commands.add_parser("campos", help="lista os campos do formulário de um projeto")
-    fields_parser.add_argument("projeto")
+    run_parser = commands.add_parser("run", help="launch dashboard for a project (.yaml) or project directory")
+    run_parser.add_argument("project", nargs="?", default=".")
+
+    fields_parser = commands.add_parser("fields", aliases=["campos"], help="list form fields for a project")
+    fields_parser.add_argument("project")
 
     args, extra = parser.parse_known_args(argv)
     if args.command == "run":
-        return run(args.projeto, extra)
+        return run(args.project, extra)
     if extra:
-        parser.error(f"argumentos não reconhecidos: {' '.join(extra)}")
+        parser.error(f"unrecognized arguments: {' '.join(extra)}")
     try:
-        return fields(args.projeto)
+        return fields(args.project)
     except (OSError, KeyError, ValueError, RuntimeError) as error:
-        sys.exit(f"geocoleta: {error}")
+        sys.exit(f"fielddash: {error}")
 
 
 if __name__ == "__main__":

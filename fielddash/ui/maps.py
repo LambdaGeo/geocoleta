@@ -4,14 +4,14 @@ import folium
 import streamlit as st
 from folium.plugins import HeatMap
 
-from geocoleta.core.model import Dataset
-from geocoleta.ui.compat import html_frame
+from fielddash.core.model import Dataset
+from fielddash.ui.compat import html_frame
 
 POINT_COLOR = "#2a78d6"
 
 
 def location_field(dataset: Dataset, config_map: dict):
-    key = (config_map or {}).get("campo")
+    key = (config_map or {}).get("field") or (config_map or {}).get("campo")
     if key:
         return dataset.find(key)
     found = dataset.of_kind("location")

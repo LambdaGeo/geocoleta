@@ -1,8 +1,8 @@
 """Exemplo de página específica de um projeto, carregada por `extensoes` na config."""
 import streamlit as st
 
-from geocoleta.core.registry import page
-from geocoleta.ui.charts import render_field
+from fielddash.core.registry import page
+from fielddash.ui.charts import render_field
 
 
 @page("Reciclagem", order=40, available=lambda ctx: ctx.dataset.find("separa_reciclagem") is not None)

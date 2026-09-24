@@ -2,26 +2,26 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from geocoleta.core.config import Config
-from geocoleta.core.model import Dataset
-from geocoleta.core.normalize import normalize
-from geocoleta.core.schema import parse_form, reconcile
+from fielddash.core.config import Config
+from fielddash.core.model import Dataset
+from fielddash.core.normalize import normalize
+from fielddash.core.schema import parse_form, reconcile
 
 
 class DataSource(ABC):
-    """Uma fonte entrega o schema do formulário e as respostas; o resto é comum."""
+    """A data source yields the form schema and raw entries; everything else is shared."""
 
     def __init__(self, config: Config):
         self.config = config
-        self.options = config.fonte
+        self.options = config.source
 
     @abstractmethod
     def fetch_schema(self) -> dict:
-        """JSON do formulário ou do projeto Epicollect."""
+        """JSON form schema or Epicollect project export."""
 
     @abstractmethod
     def fetch_entries(self) -> list:
-        """Lista de respostas (dicts no formato do export JSON do Epicollect)."""
+        """List of responses (dicts matching Epicollect JSON export format)."""
 
     def load(self) -> Dataset:
         return build_dataset(self.config, self.fetch_schema(), self.fetch_entries())
@@ -38,25 +38,25 @@ def _matches(field, keys) -> bool:
 
 
 def build_dataset(config: Config, schema: dict, entries: list) -> Dataset:
-    fields = parse_form(schema, config.fonte.get("form_ref"))
+    fields = parse_form(schema, config.source.get("form_ref"))
     df = pd.DataFrame(entries)
     fields, warnings = reconcile(fields, df.columns)
 
-    dataset = Dataset(df=df, fields=fields, title=config.titulo, warnings=warnings)
-    for alias, key in config.campos.items():
+    dataset = Dataset(df=df, fields=fields, title=config.title, warnings=warnings)
+    for alias, key in config.fields.items():
         found = dataset.find(key)
         if found is None:
-            warnings.append(f"Apelido '{alias}': campo {key!r} não encontrado")
+            warnings.append(f"Alias '{alias}': field {key!r} not found")
         else:
             found.alias = alias
 
-    for key, kind in config.tipos.items():
+    for key, kind in config.types.items():
         found = dataset.find(key)
         if found is None:
-            warnings.append(f"Tipo para '{key}': campo não encontrado")
+            warnings.append(f"Type for '{key}': field not found")
         else:
             found.type = kind
 
-    dataset.fields = [f for f in fields if not _matches(f, config.ignorar)]
-    dataset.df = normalize(df, dataset.fields, config.fuso)
+    dataset.fields = [f for f in fields if not _matches(f, config.ignore)]
+    dataset.df = normalize(df, dataset.fields, config.timezone)
     return dataset

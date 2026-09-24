@@ -9,7 +9,7 @@ pergunta pelo ``ref`` e resolve a coluna em tempo de execução.
 import html
 import re
 
-from geocoleta.core.model import Field
+from fielddash.core.model import Field
 
 SYSTEM_FIELDS = [
     Field(ref="created_at", column="created_at", label="Data da coleta", type="datetime", system=True),

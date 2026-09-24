@@ -1,7 +1,7 @@
 import json
 
-from geocoleta.core.registry import source
-from geocoleta.sources.base import DataSource
+from fielddash.core.registry import source
+from fielddash.sources.base import DataSource
 
 
 def _read(path):
@@ -11,11 +11,11 @@ def _read(path):
 
 @source("json")
 class JsonFileSource(DataSource):
-    """Dados e schema salvos em disco (útil offline e para testes).
+    """Data and schema saved on disk (useful offline and for testing).
 
-    fonte:
-      tipo: json
-      dados: ../dados.json          # {"data": [...]} ou export da API {"data": {"entries": [...]}}
+    source:
+      type: json
+      data: ../dados.json          # {"data": [...]} or API export {"data": {"entries": [...]}}
       schema: ../formulario.json
     """
 
@@ -23,7 +23,10 @@ class JsonFileSource(DataSource):
         return _read(self.config.resolve(self.options["schema"]))
 
     def fetch_entries(self):
-        data = _read(self.config.resolve(self.options["dados"]))
+        target = self.options.get("data") or self.options.get("dados")
+        if not target:
+            raise KeyError("JSON source requires 'data' (or 'dados') path")
+        data = _read(self.config.resolve(target))
         data = data.get("data", data) if isinstance(data, dict) else data
         if isinstance(data, dict):
             data = data.get("entries", [])
