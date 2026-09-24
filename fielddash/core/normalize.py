@@ -1,4 +1,4 @@
-"""Converte as respostas brutas do Epicollect em tipos que a UI usa diretamente."""
+"""Converts raw Epicollect responses into types directly used by the UI."""
 import numpy as np
 import pandas as pd
 
@@ -15,7 +15,7 @@ def _as_list(value):
     if value is None or (isinstance(value, float) and np.isnan(value)):
         return []
     text = str(value).strip()
-    # CSV do Epicollect traz múltipla escolha separada por vírgula
+    # Epicollect CSV brings multiple-choice answers separated by comma
     return [v.strip() for v in text.split(",") if v.strip()] if text else []
 
 
@@ -32,7 +32,7 @@ def _coord(value, key):
 
 
 def _unify_case(series):
-    """Respostas digitadas ("anjo da guarda", "Anjo  da Guarda", "AnjodaGuarda") viram a grafia mais frequente."""
+    """Typed text responses ("foo bar", "Foo  Bar", "FooBar") become the most frequent casing."""
     def key(value):
         return "".join(value.lower().split())
 
@@ -86,7 +86,7 @@ def normalize(df: pd.DataFrame, fields: list, timezone: str | None = None) -> pd
 
 
 def flat_for_export(df: pd.DataFrame, fields: list) -> pd.DataFrame:
-    """Tabela plana (listas unidas, localização em lat/lon) com as perguntas como cabeçalho."""
+    """Flat table (joined lists, location split into lat/lon) with question labels as column headers."""
     out = pd.DataFrame(index=df.index)
     for f in fields:
         if f.kind == "location":

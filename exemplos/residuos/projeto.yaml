@@ -15,7 +15,7 @@ fonte:
   dados: dados.json
   schema: formulario.json
 
-# Apelidos: nome curto -> final do ref, coluna ou texto da pergunta (veja `geocoleta campos`)
+# Apelidos: nome curto -> final do ref, coluna ou texto da pergunta (veja `fielddash fields`)
 campos:
   localizacao: "f27864"
   idade: "83aec3"

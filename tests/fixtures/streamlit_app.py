@@ -1,4 +1,4 @@
-# Como um projeto usaria o geocoleta num script próprio (ex.: Streamlit Community Cloud)
-import geocoleta
+# Example of using fielddash in a custom Streamlit script (e.g. Streamlit Community Cloud)
+import fielddash
 
-geocoleta.dashboard("../../exemplos/residuos/projeto.yaml")
+fielddash.dashboard("../../exemplos/residuos/projeto.yaml")

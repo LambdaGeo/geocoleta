@@ -1,6 +1,6 @@
 import pytest
 
-from geocoleta.sources import epicollect
+from fielddash.sources import epicollect
 
 
 class FakeResponse:
@@ -31,7 +31,7 @@ def isolated(tmp_path, monkeypatch):
 
 def test_token_is_reused_across_runs(isolated):
     assert epicollect.get_token("TESTE") == "tok"
-    epicollect._tokens.clear()  # simula reiniciar o app
+    epicollect._tokens.clear()  # simulates restarting the app
     assert epicollect.get_token("TESTE") == "tok"
     assert len(isolated) == 1
     assert "secret" not in epicollect.TOKEN_CACHE.read_text()
@@ -42,11 +42,11 @@ def test_rate_limit_respects_retry_after_across_restarts(isolated, monkeypatch):
     calls = []
     blocked = FakeResponse(429, {}, {"Retry-After": "1305"})
     monkeypatch.setattr(epicollect.requests, "post", lambda *a, **k: calls.append(1) or blocked)
-    for _ in range(3):  # recargas da página não voltam a bater na API
-        with pytest.raises(epicollect.EpicollectError, match="Liberação prevista"):
+    for _ in range(3):  # page reloads should not hit the API again
+        with pytest.raises(epicollect.EpicollectError, match="Retry allowed"):
             epicollect.get_token("TESTE")
-    epicollect._blocked["until"] = 0.0  # simula reiniciar o app: o bloqueio vem do disco
-    with pytest.raises(epicollect.EpicollectError, match="Liberação prevista"):
+    epicollect._blocked["until"] = 0.0  # simulates restarting app: block is loaded from disk
+    with pytest.raises(epicollect.EpicollectError, match="Retry allowed"):
         epicollect.get_token("TESTE")
     assert len(calls) == 1
     assert epicollect._blocked_until() - epicollect.time.time() > 1200
